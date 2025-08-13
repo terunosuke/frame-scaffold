@@ -1,0 +1,6 @@
+{
+  "name": "250726_仮設拾いツール（画像認識5）",
+  "description": "A modern web application to calculate the required materials and total weight for construction scaffolding based on user-defined parameters. It provides detailed material lists and transport recommendations.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}
