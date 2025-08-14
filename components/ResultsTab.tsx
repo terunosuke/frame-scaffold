@@ -77,7 +77,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         XLSX.utils.book_append_sheet(wb, ws, "拾い出し結果");
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
-        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_アルバトロス数量.xlsx`);
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_枠組足場数量.xlsx`);
     };
 
     // ⬆⬆⬆ ここまで！ ⬆⬆⬆

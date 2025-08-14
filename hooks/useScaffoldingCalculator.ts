@@ -207,16 +207,6 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         }
         
         // その他の独立した部材の計算
-        // --- 短手布材（アンチをかける布材）を枠幅ごとに分類 ---
-        const shortBeam_items: { [key: string]: number } = {};
-        const shortBeamBase = (spanTotal + 1) * antiLevelsResolved.length;
-
-        for (const [width, count] of Object.entries(frameCols)) {
-            if (count > 0) {
-                const key = `短手布材（${width}）`;
-                shortBeam_items[key] = count * shortBeamBase;
-            }
-        }
 
         const stair_count = config.faceCount * stairLevelsResolved.length; // 階段
         
@@ -259,7 +249,6 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         const toeboard_keys = sortKeysBySize(Object.keys(toeboard_items), '巾木');
         const tsumaHandrail_keys = sortKeysBySize(Object.keys(tsumaHandrail_items), '妻側手すり');
         const tsumaToeboard_keys = sortKeysBySize(Object.keys(tsumaToeboard_items), '妻側巾木');
-        const shortBeam_keys = sortKeysBySize(Object.keys(shortBeam_items), '短手布材');
 
         const ordered_keys = [
             "敷板（4m）", "敷板（3m）", "敷板（2m）", 
