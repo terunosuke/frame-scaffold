@@ -228,8 +228,8 @@ const App: React.FC = () => {
                             </svg>
                         </div>
                         <div>
-                            <h1 className="text-2xl font-bold text-gray-900">仮設足場拾い出しツール</h1>
-                            <p className="text-sm text-gray-600">枠組足場</p>
+                            <h1 className="text-2xl font-bold text-gray-900">枠組足場</h1>
+                            <p className="text-sm text-gray-600">仮設足場拾い出しツール</p>
                         </div>
                     </div>
                 </div>
