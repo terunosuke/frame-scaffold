@@ -77,7 +77,11 @@ return (
                 </p>
                 <p className="text-sm text-gray-700">
                 <span className="mr-1">⚠️</span>
-                メッシュシート・ネット・壁つなぎは算出対象外。敷板は多めの拾いです。
+                メッシュシート・ネット・壁つなぎは算出対象外
+                </p>
+                <p className="text-sm text-gray-700">
+                <span className="mr-1">⚠️</span>
+                敷板は足場全長から4m割+余りで算出（過剰寄り）
                 </p>
             </div>
             {/* ← ここまで追加 */}
