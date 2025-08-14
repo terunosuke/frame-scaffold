@@ -21,7 +21,7 @@ const responseSchema = {
             properties: {
                 "450": { type: Type.INTEGER },
                 "600": { type: Type.INTEGER },
-                "904": { type: Type.INTEGER },
+                "900": { type: Type.INTEGER },
                 "1200": { type: Type.INTEGER },
             },
             required: [],

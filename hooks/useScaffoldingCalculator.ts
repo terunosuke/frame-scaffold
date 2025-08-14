@@ -258,7 +258,6 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             ...brace_keys,
             ...tsumaHandrail_keys,
             ...tsumaToeboard_keys,
-            ...shortBeam_keys,
             ...anti_keys,
             ...toeboard_keys,
             "階段"
@@ -286,8 +285,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             anti_items,
             toeboard_items,
             tsumaHandrail_items,
-            tsumaToeboard_items,
-            shortBeam_items
+            tsumaToeboard_items
         );
 
         // 最終的な部材リストを生成
