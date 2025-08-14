@@ -47,7 +47,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
         link.setAttribute("href", url);
-        link.setAttribute("download", `${today}_アルバトロス数量.csv`);
+        link.setAttribute("download", `${today}_枠組足場数量.csv`);
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
