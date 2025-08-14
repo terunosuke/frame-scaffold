@@ -147,6 +147,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         const frame_items: { [key: string]: number } = {}; // 建枠
         const anti_items: { [key: string]: number } = {};
         const toeboard_items: { [key: string]: number } = {};
+        const handrail_items: { [key: string]: number } = {}; // 下さん
         const brace_items: { [key: string]: number } = {}; // ブレス
 
         // --- 建枠の計算 ---
@@ -202,8 +203,11 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
                 anti_items[key] = (anti_items[key] || 0) + perSpanCount * count * antiLevelsResolved.length;
             }
 
-            // 巾木の計算 (長手方向のみ、両側に設置)
-            toeboard_items[`巾木（${len}）`] = (toeboard_items[`巾木（${len}）`] || 0) + count * toeboardLevelsResolved.length * 2;
+            // 巾木の計算 (長手方向のみ、片側に設置)
+            toeboard_items[`巾木（${len}）`] = (toeboard_items[`巾木（${len}）`] || 0) + count * toeboardLevelsResolved.length * 1;
+
+            // 手すりの計算（全段に必要、1スパン×1段×片側に設置）
+            handrail_items[`長手下桟（${len}）`] = (handrail_items[`長手下桟（${len}）`] || 0) + count * config.levelCount * 1;
         }
         
         // その他の独立した部材の計算
@@ -217,7 +221,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
 
         for (const [width, colCount] of Object.entries(frameCols)) {
             if (colCount > 0) {
-                const qty = colCount * levels * tsumaSides * 1; // 1段手すりに変更
+                const qty = colCount * levels * tsumaSides * 1; // 1枚手すり
                 tsumaHandrail_items[`妻側手すり（${width}）`] = qty;
             }
         }
@@ -245,6 +249,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         // CSV出力時の表示順を定義するためのキーリスト
         const frame_keys = sortKeysBySize(Object.keys(frame_items), '建枠');
         const brace_keys = sortKeysBySize(Object.keys(brace_items), 'ブレス');
+        const handrail_keys = sortKeysBySize(Object.keys(handrail_items), '長手下桟');
         const anti_keys = sortKeysBySize(Object.keys(anti_items), 'アンチ');
         const toeboard_keys = sortKeysBySize(Object.keys(toeboard_items), '巾木');
         const tsumaHandrail_keys = sortKeysBySize(Object.keys(tsumaHandrail_items), '妻側手すり');
@@ -256,6 +261,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             "タイコ（40）", "タイコ（80）",
             ...frame_keys,
             ...brace_keys,
+            ...handrail_keys,
             ...tsumaHandrail_keys,
             ...tsumaToeboard_keys,
             ...anti_keys,

@@ -51,24 +51,37 @@ export const AIPdfExtractor: React.FC<AIPdfExtractorProps> = ({ isAnalyzing, ana
 return (
     <div className="flex flex-col md:flex-row gap-6 items-stretch">
         {/* 左カード：解説図 */}
-        <Card title="入力フォームの解説" defaultOpen className="w-full md:w-1/2">
+            <Card title="入力フォームの解説" defaultOpen className="w-full md:w-1/2">
             <div className="flex justify-center items-center gap-6 p-4 h-full">
                 <div className="flex-1 flex justify-center">
-                    <img
-                        src="/assets/立面図.jpg"
-                        alt="立面図"
-                        className="h-auto max-h-64 w-auto object-contain"
-                    />
+                <img
+                    src="/assets/立面図.jpg"
+                    alt="立面図"
+                    className="h-auto max-h-64 w-auto object-contain"
+                />
                 </div>
                 <div className="flex-1 flex justify-center">
-                    <img
-                        src="/assets/平面図.jpg"
-                        alt="平面図"
-                        className="h-auto max-h-64 w-auto object-contain"
-                    />
+                <img
+                    src="/assets/平面図.jpg"
+                    alt="平面図"
+                    className="h-auto max-h-64 w-auto object-contain"
+                />
                 </div>
             </div>
-        </Card>
+
+            {/* ← ここから追加 */}
+            <div className="px-4 pb-4 space-y-1">
+                <p className="text-sm text-gray-700">
+                <span className="mr-1">⚠️</span>
+                片面：ブレス+巾木、片面：ブレス+下桟（+メッシュシート）で算出
+                </p>
+                <p className="text-sm text-gray-700">
+                <span className="mr-1">⚠️</span>
+                メッシュシート・ネットは算出対象外。敷板は多めの拾いです。
+                </p>
+            </div>
+            {/* ← ここまで追加 */}
+            </Card>
 
         {/* 右カード：AIフォーム */}
         <Card title="🤖 図面/画像から自動入力 (AI)" defaultOpen className="w-full md:w-1/2">
