@@ -10,19 +10,19 @@ import { GoogleGenAI, Type } from "@google/genai";
 const responseSchema = {
     type: Type.OBJECT,
     properties: {
-        span600: { type: Type.INTEGER, description: "610mmスパンの数。" },
-        span900: { type: Type.INTEGER, description: "914mmスパンの数。" },
-        span1200: { type: Type.INTEGER, description: "1219mmスパンの数。" },
-        span1500: { type: Type.INTEGER, description: "1524mmスパンの数。" },
-        span1800: { type: Type.INTEGER, description: "1829mmスパンの数。" },
+        span600: { type: Type.INTEGER, description: "600mmスパンの数。" },
+        span900: { type: Type.INTEGER, description: "900mmスパンの数。" },
+        span1200: { type: Type.INTEGER, description: "1200mmスパンの数。" },
+        span1500: { type: Type.INTEGER, description: "1500mmスパンの数。" },
+        span1800: { type: Type.INTEGER, description: "1800mmスパンの数。" },
         faceCount: { type: Type.INTEGER, description: "面の数（列数）。" },
         frameCols: {
             type: Type.OBJECT,
             properties: {
                 "450": { type: Type.INTEGER },
-                "610": { type: Type.INTEGER },
-                "914": { type: Type.INTEGER },
-                "1219": { type: Type.INTEGER },
+                "600": { type: Type.INTEGER },
+                "904": { type: Type.INTEGER },
+                "1200": { type: Type.INTEGER },
             },
             required: [],
         },
@@ -70,13 +70,13 @@ export default async function handler(req: any, res: any) {
         // --- 5. プロンプトの構築 ---
         const filePart = { inlineData: { mimeType, data: fileBase64 } };
         const systemInstruction = `あなたは建設用の足場図面を解析する専門家です。提供された図面（PDFまたは画像）から以下の情報を抽出し、指定されたJSON形式で正確に返してください。
-- 各スパン（610, 914, 1219, 1524, 1829mm）の数。
+- 各スパン（600, 900, 1200, 1500, 1800mm）の数。
 - 列数（スパン方向と直角の面の数）。
-- 各枠方向サイズ（450, 610, 914, 1219mm）の数。
+- 各枠方向サイズ（450, 600, 900, 1200mm）の数。
 - 段数（垂直方向の層の数）。
 📌 **注意**：
-- スパン方向について、特に端部の短いスパン（例：1219mmが1本だけなど）も必ず正確に数えてください。  
-- 同じ寸法の数値が左右両端に書かれていても、実際に列が連なってない場合は重複として数えず、1列として扱ってください（例：1219が両端にあるだけなら1列とする）。
+- スパン方向について、特に端部の短いスパン（例：1200mmが1本だけなど）も必ず正確に数えてください。  
+- 同じ寸法の数値が左右両端に書かれていても、実際に列が連なってない場合は重複として数えず、1列として扱ってください（例：1200が両端にあるだけなら1列とする）。
 - 図面から値を特定できない項目は0にしてください。
 - 枠方向の読み取れない場合は枠サイズは900、列数は1をデフォルト値としてください。
 `;
