@@ -203,6 +203,49 @@ export const InputForm: React.FC<InputFormProps> = ({
                                 <option value="custom">指定段のみ</option>
                             </InputGroup>
                             {config.stairMode === 'custom' && <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />}
+
+                            <InputGroup label="壁つなぎ" as="select" value={config.wallTieMode} onChange={e => setConfigField('wallTieMode', e.target.value as 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100')}>
+                                <option value="none">不要</option>
+                                <option value="KTS16">KTS16（160-200）</option>
+                                <option value="KTS20">KTS20（200-240）</option>
+                                <option value="KTS30">KTS30（240-320）</option>
+                                <option value="KTS45">KTS45（320-480）</option>
+                                <option value="KTS60">KTS60（480-670）</option>
+                                <option value="KTS80">KTS80（670-860）</option>
+                                <option value="KTS100">KTS100（860-1050）</option>
+                            </InputGroup>
+                            {config.wallTieMode !== 'none' && (
+                                <>
+                                    <InputGroup label="設置段数" as="select" value={config.wallTieLevelMode} onChange={e => setConfigField('wallTieLevelMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="alternate">隔段</option>
+                                        <option value="custom">設置段数を手入力</option>
+                                    </InputGroup>
+                                    {config.wallTieLevelMode === 'custom' && <InputGroup label="段数" type="number" placeholder="全5段中3段だけ設置→3" value={config.wallTieLevelCount} min={0} onChange={e => setConfigField('wallTieLevelCount', parseInt(e.target.value) || 0)} />}
+                                    
+                                    <InputGroup label="1段当たりの設置数" as="select" value={config.wallTieSpanMode} onChange={e => setConfigField('wallTieSpanMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全スパン</option>
+                                        <option value="alternate">隔スパン</option>
+                                        <option value="custom">1段当たりの設置数を手入力</option>
+                                    </InputGroup>
+                                    {config.wallTieSpanMode === 'custom' && <InputGroup label="1段当たりの設置数" type="number" placeholder="各段20個ずつ→20" value={config.wallTieSpanCount} min={0} onChange={e => setConfigField('wallTieSpanCount', parseInt(e.target.value) || 0)} />}
+                                </>
+                            )}
+
+                            <InputGroup label="層間養生ネット" as="select" value={config.layerNetMode} onChange={e => setConfigField('layerNetMode', e.target.value as 'none' | 'required')}>
+                                <option value="none">不要</option>
+                                <option value="required">必要</option>
+                            </InputGroup>
+                            {config.layerNetMode === 'required' && (
+                                <>
+                                    <InputGroup label="設置段数" as="select" value={config.layerNetLevelMode} onChange={e => setConfigField('layerNetLevelMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="alternate">隔段</option>
+                                        <option value="custom">設置段数を手入力</option>
+                                    </InputGroup>
+                                    {config.layerNetLevelMode === 'custom' && <InputGroup label="段数" type="number" placeholder="全5段中3段だけ設置→3" value={config.layerNetLevelCount} min={0} onChange={e => setConfigField('layerNetLevelCount', parseInt(e.target.value) || 0)} />}
+                                </>
+                            )}
                         </div>
                     </div>
                 </Card>
@@ -220,5 +263,4 @@ export const InputForm: React.FC<InputFormProps> = ({
                 </Card>
             </fieldset>
         </div>
-    );
 };

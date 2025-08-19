@@ -214,6 +214,59 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
 
         const stair_count = config.faceCount * stairLevelsResolved.length; // 階段
         
+        // 壁つなぎの計算
+        const wallTie_items: { [key: string]: number } = {};
+        if (config.wallTieMode !== 'none') {
+            // 設置段数の計算
+            let wallTieLevels = 0;
+            if (config.wallTieLevelMode === 'all') {
+                wallTieLevels = config.levelCount;
+            } else if (config.wallTieLevelMode === 'alternate') {
+                wallTieLevels = Math.ceil(config.levelCount / 2);
+            } else {
+                wallTieLevels = config.wallTieLevelCount;
+            }
+
+            // 1段当たりの設置数の計算
+            let wallTieSpans = 0;
+            if (config.wallTieSpanMode === 'all') {
+                wallTieSpans = spanTotal;
+            } else if (config.wallTieSpanMode === 'alternate') {
+                wallTieSpans = Math.ceil((spanTotal + 1) / 2);
+            } else {
+                wallTieSpans = config.wallTieSpanCount;
+            }
+
+            const totalWallTies = wallTieLevels * wallTieSpans;
+            if (totalWallTies > 0) {
+                wallTie_items[config.wallTieMode] = totalWallTies;
+            }
+        }
+
+        // 層間養生ネットの計算
+        const layerNet_items: { [key: string]: number } = {};
+        if (config.layerNetMode === 'required') {
+            // 設置段数の計算
+            let layerNetLevels = 0;
+            if (config.layerNetLevelMode === 'all') {
+                layerNetLevels = config.levelCount;
+            } else if (config.layerNetLevelMode === 'alternate') {
+                layerNetLevels = Math.ceil(config.levelCount / 2);
+            } else {
+                layerNetLevels = config.layerNetLevelCount;
+            }
+
+            if (layerNetLevels > 0) {
+                // 層間ネットの総数 = 段数 × (スパン長 ÷ 8.3) ※小数点以下切り上げ
+                const layerNetCount = layerNetLevels * Math.ceil(spanMmTotal / 8300);
+                // 層間ネットブラケットの総数 = 段数 × (スパン総数 + 1)
+                const layerNetBracketCount = layerNetLevels * (spanTotal + 1);
+
+                if (layerNetCount > 0) layerNet_items['層間ネット'] = layerNetCount;
+                if (layerNetBracketCount > 0) layerNet_items['層間ネットブラケット'] = layerNetBracketCount;
+            }
+        }
+        
         // 妻側手すり（1段手すりに変更）
         const tsumaHandrail_items: { [key: string]: number } = {};
         const tsumaSides = config.tsumaCount;
@@ -266,7 +319,9 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             ...tsumaToeboard_keys,
             ...anti_keys,
             ...toeboard_keys,
-            "階段"
+            "階段",
+            "KTS16", "KTS20", "KTS30", "KTS45", "KTS60", "KTS80", "KTS100",
+            "層間ネット", "層間ネットブラケット"
         ];
 
         // 各部材の数量を`coefsCombined`に集約
@@ -291,7 +346,9 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             anti_items,
             toeboard_items,
             tsumaHandrail_items,
-            tsumaToeboard_items
+            tsumaToeboard_items,
+            wallTie_items,
+            layerNet_items
         );
 
         // 最終的な部材リストを生成

@@ -1,4 +1,3 @@
-
 export interface CustomHeight {
     height: number;
     count: number;
@@ -16,12 +15,11 @@ export interface ScaffoldingConfig {
     span1800: number;
     faceCount: number;
     faceWidth: number;
-        // 👇これを追加
     frameCols: {
         [key: string]: number;
     };
     levelCount: number;
-    heightMode: 'all1800' | 'custom';
+    heightMode: 'all1700' | 'custom';
     customHeights: CustomHeight[];
     pillarSelection: PillarSelection;
     isBottom: boolean;
@@ -37,6 +35,14 @@ export interface ScaffoldingConfig {
     tsumaCount: 0 | 1 | 2;
     stairMode: 'none' | 'notTop' | 'custom';
     stairLevels: string;
+    wallTieMode: 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100';
+    wallTieLevelMode: 'all' | 'alternate' | 'custom';
+    wallTieLevelCount: number;
+    wallTieSpanMode: 'all' | 'alternate' | 'custom';
+    wallTieSpanCount: number;
+    layerNetMode: 'none' | 'required';
+    layerNetLevelMode: 'all' | 'alternate' | 'custom';
+    layerNetLevelCount: number;
     memo: string;
 }
 
@@ -51,6 +57,7 @@ export interface CalculationResults {
     materials: MaterialItem[];
     totalWeight: number;
     spanTotal: number;
+    spanMmTotal: number;
     totalHeight: number;
     jackBaseCount: number;
     pillarText: string;
