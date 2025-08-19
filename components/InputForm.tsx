@@ -176,10 +176,10 @@ export const InputForm: React.FC<InputFormProps> = ({
                         </div>
                         {/* Other */}
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
-                            <h4 className="font-semibold text-green-800">◎ その他</h4>
                             
                             {/* アンチ設置段 */}
-                            <InputGroup label="アンチ設置段（各段の下部に設置とする）" as="select" value={config.antiMode} onChange={e => setConfigField('antiMode', e.target.value as 'all' | 'notBottom' | 'custom')}>
+                            <h4 className="font-semibold text-green-800">◎ アンチ設置段（各段の下部に設置とする）</h4>
+                            <InputGroup label="" as="select" value={config.antiMode} onChange={e => setConfigField('antiMode', e.target.value as 'all' | 'notBottom' | 'custom')}>
                                 <option value="all">全段（既存足場の上に更に組む場合）</option>
                                 <option value="notBottom">最下段以外（GLから組み始める場合）</option>
                                 <option value="custom">指定段</option>
@@ -191,7 +191,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
 
                             {/* 巾木設置段 */}
-                            <InputGroup label="巾木設置段（各段の下部に設置とする）" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 巾木設置段（各段の下部に設置とする）</h4>
+                            <InputGroup label="" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
                                 <option value="all">全段</option>
                                 <option value="sameAsAnti">アンチと同じ段</option>
                                 <option value="custom">指定段</option>
@@ -203,14 +204,16 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
                             
                             {/* 妻側手すり */}
-                            <InputGroup label="妻側手すり" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 妻側手すり</h4>
+                            <InputGroup label="" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
                                 <option value={2}>両側必要（新規足場）→2面</option>
                                 <option value={1}>片側のみ→1面</option>
                                 <option value={0}>不要→0面</option>
                             </InputGroup>
 
                             {/* 階段設置 */}
-                            <InputGroup label="階段設置" as="select" value={config.stairMode} onChange={e => setConfigField('stairMode', e.target.value as 'none' | 'notTop' | 'custom')}>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 階段設置</h4>
+                            <InputGroup label="" as="select" value={config.stairMode} onChange={e => setConfigField('stairMode', e.target.value as 'none' | 'notTop' | 'custom')}>
                                 <option value="none">設置しない</option>
                                 <option value="notTop">最上段以外</option>
                                 <option value="custom">指定段のみ</option>
@@ -222,7 +225,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
 
                             {/* 壁つなぎ */}
-                            <InputGroup label="壁つなぎ" as="select" value={config.wallTieMode} onChange={e => setConfigField('wallTieMode', e.target.value as 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100')}>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 壁つなぎ</h4>
+                            <InputGroup label="" as="select" value={config.wallTieMode} onChange={e => setConfigField('wallTieMode', e.target.value as 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100')}>
                                 <option value="none">不要</option>
                                 <option value="KTS16">KTS16（160-200）</option>
                                 <option value="KTS20">KTS20（200-240）</option>
@@ -259,7 +263,8 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
 
                             {/* 層間養生ネット */}
-                            <InputGroup label="層間養生ネット" as="select" value={config.layerNetMode} onChange={e => setConfigField('layerNetMode', e.target.value as 'none' | 'required')}>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 層間養生ネット</h4>
+                            <InputGroup label="" as="select" value={config.layerNetMode} onChange={e => setConfigField('layerNetMode', e.target.value as 'none' | 'required')}>
                                 <option value="none">不要</option>
                                 <option value="required">必要</option>
                             </InputGroup>
