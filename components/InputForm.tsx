@@ -233,7 +233,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                             </InputGroup>
                             {config.perimeterSheetMode === 'required' && (
                                 <div className="ml-4 space-y-2">
-                                    <InputGroup label="必要段数（3段で1枚/スパン、端数切上げ。例：4段→2枚/スパン）" as="select" value={config.perimeterSheetLevelMode} onChange={e => setConfigField('perimeterSheetLevelMode', e.target.value as 'all' | 'custom')}>
+                                    <InputGroup label="必要段数（3段で1枚/スパン別で拾い　例:4段→2枚/スパン）" as="select" value={config.perimeterSheetLevelMode} onChange={e => setConfigField('perimeterSheetLevelMode', e.target.value as 'all' | 'custom')}>
                                         <option value="all">全段</option>
                                         <option value="custom">段数指定</option>
                                     </InputGroup>
