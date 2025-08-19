@@ -149,8 +149,9 @@ export const InputForm: React.FC<InputFormProps> = ({
 
                 <Card title="個別部材の設定">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-                        {/* Jack Base */}
+                        {/* Jack Base + Anti + Toeboard */}
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                            {/* ジャッキベース */}
                             <h4 className="font-semibold text-green-800">◎ ジャッキベース</h4>
                             <InputGroup label="最下段である（ジャッキベース・敷板必要）" as="checkbox" checked={config.isBottom} onChange={e => setConfigField('isBottom', e.target.checked)} />
                             {config.isBottom && (
@@ -173,12 +174,9 @@ export const InputForm: React.FC<InputFormProps> = ({
                                     <InputGroup label="タイコ80" type="number" min={0} value={config.taiko80} onChange={e => setConfigField('taiko80', parseInt(e.target.value) || 0)} />
                                 </>
                             )}
-                        </div>
-                        {/* Other */}
-                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
-                            
+
                             {/* アンチ設置段 */}
-                            <h4 className="font-semibold text-green-800">◎ アンチ設置段（各段の下部に設置とする）</h4>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ アンチ設置段（各段の下部に設置とする）</h4>
                             <InputGroup label="" as="select" value={config.antiMode} onChange={e => setConfigField('antiMode', e.target.value as 'all' | 'notBottom' | 'custom')}>
                                 <option value="all">全段（既存足場の上に更に組む場合）</option>
                                 <option value="notBottom">最下段以外（GLから組み始める場合）</option>
@@ -202,9 +200,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                                     <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.toeboardLevels} onChange={e => setConfigField('toeboardLevels', e.target.value)} />
                                 </div>
                             )}
-                            
+                        </div>
+
+                        {/* Tsuma + Stair */}
+                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
                             {/* 妻側手すり */}
-                            <h4 className="font-semibold text-green-800 mt-6">◎ 妻側手すり</h4>
+                            <h4 className="font-semibold text-green-800">◎ 妻側手すり</h4>
                             <InputGroup label="" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
                                 <option value={2}>両側必要（新規足場）→2面</option>
                                 <option value={1}>片側のみ→1面</option>
@@ -223,9 +224,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                                     <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
                                 </div>
                             )}
+                        </div>
 
+                        {/* Wall Tie + Layer Net */}
+                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
                             {/* 壁つなぎ */}
-                            <h4 className="font-semibold text-green-800 mt-6">◎ 壁つなぎ</h4>
+                            <h4 className="font-semibold text-green-800">◎ 壁つなぎ</h4>
                             <InputGroup label="" as="select" value={config.wallTieMode} onChange={e => setConfigField('wallTieMode', e.target.value as 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100')}>
                                 <option value="none">不要</option>
                                 <option value="KTS16">KTS16（160-200）</option>
