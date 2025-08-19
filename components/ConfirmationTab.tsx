@@ -69,6 +69,17 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         return `必要（${levelText}）`;
     })();
 
+    // 外周シートの表示用フォーマット
+    const perimeterSheetSummary = (() => {
+        if (config.perimeterSheetMode === 'none') return '不要';
+        
+        let levelText = '';
+        if (config.perimeterSheetLevelMode === 'all') levelText = '全段';
+        else levelText = `${config.perimeterSheetLevelCount}段`;
+
+        return `必要（${levelText}・3段/1枚計算）`;
+    })();
+
     // 列構成の表示用フォーマット
     const frameCols = config.frameCols || {};
     const frameSummary = Object.entries(frameCols)
@@ -92,6 +103,7 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         { item: "階段設置", value: stairSummary },
         { item: "壁つなぎ", value: wallTieSummary },
         { item: "層間養生ネット", value: layerNetSummary },
+        { item: "外周シート", value: perimeterSheetSummary },
     ];
     
     return (

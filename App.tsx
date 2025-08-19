@@ -89,6 +89,9 @@ const App: React.FC = () => {
         layerNetMode: 'none',
         layerNetLevelMode: 'all',
         layerNetLevelCount: 0,
+        perimeterSheetMode: 'none',
+        perimeterSheetLevelMode: 'all',
+        perimeterSheetLevelCount: 0,
         memo: '',
         frameCols: {
             "450": 0,

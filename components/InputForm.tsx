@@ -202,7 +202,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
                         </div>
 
-                        {/* Tsuma + Stair */}
+                        {/* Tsuma + Stair + Perimeter Sheet */}
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
                             {/* 妻側手すり */}
                             <h4 className="font-semibold text-green-800">◎ 妻側手すり</h4>
@@ -222,6 +222,26 @@ export const InputForm: React.FC<InputFormProps> = ({
                             {config.stairMode === 'custom' && (
                                 <div className="ml-4">
                                     <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
+                                </div>
+                            )}
+
+                            {/* 外周シート */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 外周シート</h4>
+                            <InputGroup label="" as="select" value={config.perimeterSheetMode} onChange={e => setConfigField('perimeterSheetMode', e.target.value as 'none' | 'required')}>
+                                <option value="none">不要</option>
+                                <option value="required">必要</option>
+                            </InputGroup>
+                            {config.perimeterSheetMode === 'required' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="必要段数（3段/1枚として計算します）" as="select" value={config.perimeterSheetLevelMode} onChange={e => setConfigField('perimeterSheetLevelMode', e.target.value as 'all' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="custom">段数指定</option>
+                                    </InputGroup>
+                                    {config.perimeterSheetLevelMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段数" type="number" placeholder="指定する段数を入力" value={config.perimeterSheetLevelCount} min={0} onChange={e => setConfigField('perimeterSheetLevelCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>

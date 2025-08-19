@@ -43,6 +43,9 @@ export interface ScaffoldingConfig {
     layerNetMode: 'none' | 'required';
     layerNetLevelMode: 'all' | 'alternate' | 'custom';
     layerNetLevelCount: number;
+    perimeterSheetMode: 'none' | 'required';
+    perimeterSheetLevelMode: 'all' | 'custom';
+    perimeterSheetLevelCount: number;
     memo: string;
 }
 

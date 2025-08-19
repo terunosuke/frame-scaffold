@@ -257,13 +257,38 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             }
 
             if (layerNetLevels > 0) {
-                // 層間ネットの総数 = 段数 × (スパン長 ÷ 8.3) ※小数点以下切り上げ
-                const layerNetCount = layerNetLevels * Math.ceil(spanMmTotal / 8300);
+                // 層間ネットの総数 = 段数 × (スパン長 ÷ 5.5) ※小数点以下切り上げ
+                const layerNetCount = layerNetLevels * Math.ceil(spanMmTotal / 5500);
                 // 層間ネットブラケットの総数 = 段数 × (スパン総数 + 1)
                 const layerNetBracketCount = layerNetLevels * (spanTotal + 1);
 
                 if (layerNetCount > 0) layerNet_items['層間ネット'] = layerNetCount;
                 if (layerNetBracketCount > 0) layerNet_items['層間ネットブラケット'] = layerNetBracketCount;
+            }
+        }
+
+        // 外周シートの計算
+        const perimeterSheet_items: { [key: string]: number } = {};
+        if (config.perimeterSheetMode === 'required') {
+            // 必要段数の計算
+            let perimeterSheetLevels = 0;
+            if (config.perimeterSheetLevelMode === 'all') {
+                perimeterSheetLevels = config.levelCount;
+            } else {
+                perimeterSheetLevels = config.perimeterSheetLevelCount;
+            }
+
+            if (perimeterSheetLevels > 0) {
+                // 3段/1枚として計算（切り上げ）
+                const sheetsPerSpan = Math.ceil(perimeterSheetLevels / 3);
+
+                // スパン長さごとにメッシュシートを計算
+                for (const [length, count] of Object.entries(spanLengths)) {
+                    if (count === 0) continue;
+                    const len = parseInt(length);
+                    const key = `メッシュシート（${len}）`;
+                    perimeterSheet_items[key] = count * sheetsPerSpan;
+                }
             }
         }
         
@@ -321,7 +346,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             ...toeboard_keys,
             "階段",
             "KTS16", "KTS20", "KTS30", "KTS45", "KTS60", "KTS80", "KTS100",
-            "層間ネット", "層間ネットブラケット"
+            "層間ネット", "層間ネットブラケット",
+            "メッシュシート（600）", "メッシュシート（900）", "メッシュシート（1200）", "メッシュシート（1500）", "メッシュシート（1800）"
         ];
 
         // 各部材の数量を`coefsCombined`に集約
@@ -348,7 +374,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             tsumaHandrail_items,
             tsumaToeboard_items,
             wallTie_items,
-            layerNet_items
+            layerNet_items,
+            perimeterSheet_items
         );
 
         // 最終的な部材リストを生成
