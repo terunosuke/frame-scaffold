@@ -255,7 +255,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                         <textarea
                             className="w-full p-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"
                             rows={4}
-                            placeholder="現場名、日付、担当者、部位など自由記入。エクセル出力にも反映されます。"
+                            placeholder="現場名、日付、担当者、部位など自由記入"
                             value={config.memo}
                             onChange={e => setConfigField('memo', e.target.value)}
                         />
@@ -263,4 +263,5 @@ export const InputForm: React.FC<InputFormProps> = ({
                 </Card>
             </fieldset>
         </div>
+    );
 };
