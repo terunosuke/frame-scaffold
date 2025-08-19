@@ -40,6 +40,46 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         0: '不要（0面）',
     }[config.tsumaCount];
 
+    // 壁つなぎの表示用フォーマット
+    const wallTieSummary = (() => {
+        if (config.wallTieMode === 'none') return '不要';
+        
+        let levelText = '';
+        if (config.wallTieLevelMode === 'all') levelText = '全段';
+        else if (config.wallTieLevelMode === 'alternate') levelText = '隔段';
+        else levelText = `${config.wallTieLevelCount}段`;
+
+        let spanText = '';
+        if (config.wallTieSpanMode === 'all') spanText = '全スパン';
+        else if (config.wallTieSpanMode === 'alternate') spanText = '隔スパン';
+        else spanText = `1段当たり${config.wallTieSpanCount}個`;
+
+        return `${config.wallTieMode}（${levelText}・${spanText}）`;
+    })();
+
+    // 層間養生ネットの表示用フォーマット
+    const layerNetSummary = (() => {
+        if (config.layerNetMode === 'none') return '不要';
+        
+        let levelText = '';
+        if (config.layerNetLevelMode === 'all') levelText = '全段';
+        else if (config.layerNetLevelMode === 'alternate') levelText = '隔段';
+        else levelText = `${config.layerNetLevelCount}段`;
+
+        return `必要（${levelText}）`;
+    })();
+
+    // 外周シートの表示用フォーマット
+    const perimeterSheetSummary = (() => {
+        if (config.perimeterSheetMode === 'none') return '不要';
+        
+        let levelText = '';
+        if (config.perimeterSheetLevelMode === 'all') levelText = '全段';
+        else levelText = `${config.perimeterSheetLevelCount}段`;
+
+        return `必要（${levelText}・3段/1枚計算）`;
+    })();
+
     // 列構成の表示用フォーマット
     const frameCols = config.frameCols || {};
     const frameSummary = Object.entries(frameCols)
@@ -61,6 +101,9 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         { item: "巾木設置段", value: toeboardSummary },
         { item: "妻側手すり", value: tsumaSummary },
         { item: "階段設置", value: stairSummary },
+        { item: "壁つなぎ", value: wallTieSummary },
+        { item: "層間養生ネット", value: layerNetSummary },
+        { item: "外周シート", value: perimeterSheetSummary },
     ];
     
     return (

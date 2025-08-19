@@ -149,8 +149,9 @@ export const InputForm: React.FC<InputFormProps> = ({
 
                 <Card title="個別部材の設定">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-                        {/* Jack Base */}
+                        {/* Jack Base + Anti + Toeboard */}
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                            {/* ジャッキベース */}
                             <h4 className="font-semibold text-green-800">◎ ジャッキベース</h4>
                             <InputGroup label="最下段である（ジャッキベース・敷板必要）" as="checkbox" checked={config.isBottom} onChange={e => setConfigField('isBottom', e.target.checked)} />
                             {config.isBottom && (
@@ -173,36 +174,138 @@ export const InputForm: React.FC<InputFormProps> = ({
                                     <InputGroup label="タイコ80" type="number" min={0} value={config.taiko80} onChange={e => setConfigField('taiko80', parseInt(e.target.value) || 0)} />
                                 </>
                             )}
-                        </div>
-                        {/* Other */}
-                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
-                            <h4 className="font-semibold text-green-800">◎ その他</h4>
-                            <InputGroup label="アンチ設置段（各段の下部に設置とする）" as="select" value={config.antiMode} onChange={e => setConfigField('antiMode', e.target.value as 'all' | 'notBottom' | 'custom')}>
+
+                            {/* アンチ設置段 */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ アンチ設置段（各段の下部に設置とする）</h4>
+                            <InputGroup label="" as="select" value={config.antiMode} onChange={e => setConfigField('antiMode', e.target.value as 'all' | 'notBottom' | 'custom')}>
                                 <option value="all">全段（既存足場の上に更に組む場合）</option>
                                 <option value="notBottom">最下段以外（GLから組み始める場合）</option>
                                 <option value="custom">指定段</option>
                             </InputGroup>
-                            {config.antiMode === 'custom' && <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.antiLevels} onChange={e => setConfigField('antiLevels', e.target.value)} />}
+                            {config.antiMode === 'custom' && (
+                                <div className="ml-4">
+                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.antiLevels} onChange={e => setConfigField('antiLevels', e.target.value)} />
+                                </div>
+                            )}
 
-                            <InputGroup label="巾木設置段（各段の下部に設置とする）" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
+                            {/* 巾木設置段 */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 巾木設置段（各段の下部に設置とする）</h4>
+                            <InputGroup label="" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
                                 <option value="all">全段</option>
                                 <option value="sameAsAnti">アンチと同じ段</option>
                                 <option value="custom">指定段</option>
                             </InputGroup>
-                            {config.toeboardMode === 'custom' && <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.toeboardLevels} onChange={e => setConfigField('toeboardLevels', e.target.value)} />}
-                            
-                            <InputGroup label="妻側手すり" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
+                            {config.toeboardMode === 'custom' && (
+                                <div className="ml-4">
+                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.toeboardLevels} onChange={e => setConfigField('toeboardLevels', e.target.value)} />
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Tsuma + Stair + Perimeter Sheet */}
+                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                            {/* 妻側手すり */}
+                            <h4 className="font-semibold text-green-800">◎ 妻側手すり</h4>
+                            <InputGroup label="" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
                                 <option value={2}>両側必要（新規足場）→2面</option>
                                 <option value={1}>片側のみ→1面</option>
                                 <option value={0}>不要→0面</option>
                             </InputGroup>
 
-                            <InputGroup label="階段設置" as="select" value={config.stairMode} onChange={e => setConfigField('stairMode', e.target.value as 'none' | 'notTop' | 'custom')}>
+                            {/* 階段設置 */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 階段設置</h4>
+                            <InputGroup label="" as="select" value={config.stairMode} onChange={e => setConfigField('stairMode', e.target.value as 'none' | 'notTop' | 'custom')}>
                                 <option value="none">設置しない</option>
                                 <option value="notTop">最上段以外</option>
                                 <option value="custom">指定段のみ</option>
                             </InputGroup>
-                            {config.stairMode === 'custom' && <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />}
+                            {config.stairMode === 'custom' && (
+                                <div className="ml-4">
+                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
+                                </div>
+                            )}
+
+                            {/* 外周シート */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 外周シート</h4>
+                            <InputGroup label="" as="select" value={config.perimeterSheetMode} onChange={e => setConfigField('perimeterSheetMode', e.target.value as 'none' | 'required')}>
+                                <option value="none">不要</option>
+                                <option value="required">必要</option>
+                            </InputGroup>
+                            {config.perimeterSheetMode === 'required' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="必要段数（3段で1枚/スパン別で拾い　例:4段→2枚/スパン）" as="select" value={config.perimeterSheetLevelMode} onChange={e => setConfigField('perimeterSheetLevelMode', e.target.value as 'all' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="custom">段数指定</option>
+                                    </InputGroup>
+                                    {config.perimeterSheetLevelMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段数" type="number" placeholder="指定する段数を入力" value={config.perimeterSheetLevelCount} min={0} onChange={e => setConfigField('perimeterSheetLevelCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Wall Tie + Layer Net */}
+                        <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
+                            {/* 壁つなぎ */}
+                            <h4 className="font-semibold text-green-800">◎ 壁つなぎ</h4>
+                            <InputGroup label="" as="select" value={config.wallTieMode} onChange={e => setConfigField('wallTieMode', e.target.value as 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100')}>
+                                <option value="none">不要</option>
+                                <option value="KTS16">KTS16（160-200）</option>
+                                <option value="KTS20">KTS20（200-240）</option>
+                                <option value="KTS30">KTS30（240-320）</option>
+                                <option value="KTS45">KTS45（320-480）</option>
+                                <option value="KTS60">KTS60（480-670）</option>
+                                <option value="KTS80">KTS80（670-860）</option>
+                                <option value="KTS100">KTS100（860-1050）</option>
+                            </InputGroup>
+                            {config.wallTieMode !== 'none' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="設置段数" as="select" value={config.wallTieLevelMode} onChange={e => setConfigField('wallTieLevelMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="alternate">隔段</option>
+                                        <option value="custom">設置段数を手入力</option>
+                                    </InputGroup>
+                                    {config.wallTieLevelMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段数" type="number" placeholder="全5段中3段だけ設置→3" value={config.wallTieLevelCount} min={0} onChange={e => setConfigField('wallTieLevelCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
+                                    
+                                    <InputGroup label="1段当たりの設置数" as="select" value={config.wallTieSpanMode} onChange={e => setConfigField('wallTieSpanMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全スパン</option>
+                                        <option value="alternate">隔スパン</option>
+                                        <option value="custom">1段当たりの設置数を手入力</option>
+                                    </InputGroup>
+                                    {config.wallTieSpanMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="1段当たりの設置数" type="number" placeholder="各段20個ずつ→20" value={config.wallTieSpanCount} min={0} onChange={e => setConfigField('wallTieSpanCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {/* 層間養生ネット */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 層間養生ネット</h4>
+                            <InputGroup label="" as="select" value={config.layerNetMode} onChange={e => setConfigField('layerNetMode', e.target.value as 'none' | 'required')}>
+                                <option value="none">不要</option>
+                                <option value="required">必要</option>
+                            </InputGroup>
+                            {config.layerNetMode === 'required' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="設置段数" as="select" value={config.layerNetLevelMode} onChange={e => setConfigField('layerNetLevelMode', e.target.value as 'all' | 'alternate' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="alternate">隔段</option>
+                                        <option value="custom">設置段数を手入力</option>
+                                    </InputGroup>
+                                    {config.layerNetLevelMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段数" type="number" placeholder="全5段中3段だけ設置→3" value={config.layerNetLevelCount} min={0} onChange={e => setConfigField('layerNetLevelCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </Card>
