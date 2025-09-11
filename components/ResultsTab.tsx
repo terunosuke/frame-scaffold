@@ -80,6 +80,26 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_枠組足場数量.xlsx`);
     };
 
+    const exportToImportFormat = () => {
+        const wb = XLSX.utils.book_new();
+        const wsData = [
+            ["規格コード\r\n１０桁（必須）", "数量\r\n５桁（必須）", "備考\r\n２０桁"],
+            ...results.materials.map((item: MaterialItem) => [
+                SPEC_MAP[item.name] || "",
+                item.quantity,
+                ""
+            ])
+        ];
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        ws["!cols"] = [
+            { wch: 15 }, { wch: 10 }, { wch: 25 }
+        ];
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
+    };
+
     // ⬆⬆⬆ ここまで！ ⬆⬆⬆
 
 
@@ -133,7 +153,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
 
             <div className="flex justify-between items-center mb-4">
                 <h3 className="text-xl font-bold text-gray-800">💻 部材リスト</h3>
-                <div className="flex gap-4">
+                <div className="flex gap-2">
                     <button
                         onClick={downloadCSV}
                         className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
@@ -145,6 +165,12 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
                         className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
                     >
                         📥 Excel形式でダウンロード
+                    </button>
+                    <button
+                        onClick={exportToImportFormat}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    >
+                        📤 インポート用Excel
                     </button>
                 </div>
             </div>
