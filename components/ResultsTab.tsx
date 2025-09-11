@@ -82,28 +82,35 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     const exportToImportFormat = () => {
         const wb = XLSX.utils.book_new();
 
-        // ヘッダ（半角スペース1個で完全一致）
+        // ヘッダー：半角スペース1つで完全一致（改行・全角スペースは不可）
         const headers = [
             "規格コード １０桁（必須）",
             "数量 ５桁（必須）",
             "備考 ２０桁",
         ];
 
+        // 規格は SPEC_MAP[item.name] をそのまま使用（ゼロ埋めしない）
         const rows = results.materials.map((item: MaterialItem) => {
-            // 規格そのものを使用
-            const code10 = String(item.spec ?? "").padStart(10, "0").slice(-10);
-            const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
-            return [code10, qty, ""];
+            const spec = String(SPEC_MAP[item.name] ?? "");   // ← ここがポイント
+            const qty  = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
+            return [spec, qty, ""];
         });
 
         const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-        ws["!cols"] = [{ wch: 15 }, { wch: 10 }, { wch: 25 }];
+
+        // 見やすい列幅（任意）
+        ws["!cols"] = [{ wch: 16 }, { wch: 10 }, { wch: 25 }];
+
+        // データ範囲を A1:Cn に限定（D/Eを“範囲外”にする）
+        ws["!ref"] = `A1:C${rows.length + 1}`;
+
         XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
     };
+
 
     return (
         <div>
