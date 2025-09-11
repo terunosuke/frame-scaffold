@@ -78,7 +78,8 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_枠組足場数量.xlsx`);
     };
-
+    
+    {/* 
     const exportToImportFormat = async () => {
         const templateUrl = "/templates/ImportFile.xlsx";
         const res = await fetch(templateUrl, { cache: "no-store" });
@@ -125,6 +126,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         // ★ ファイル名はASCIIに
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `ImportFile_${today}.xlsx`);
     };
+    */}
 
     return (
         <div>
@@ -189,6 +191,14 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
                     >
                         📥 Excel形式でダウンロード
                     </button>
+                    {/* 
+                    <button
+                        onClick={exportToImportFormat}
+                        className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                    >
+                        📤 インポート用Excel
+                    </button>
+                    */}
                 </div>
             </div>
             
