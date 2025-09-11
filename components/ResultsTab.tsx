@@ -6,7 +6,6 @@ import { SummaryCard } from './SummaryCard';
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { SPEC_MAP } from "../constants"; // エクセルセット
-import { MILX_CODE_MAP } from '@/mappings/milxCodes';
 
 interface ResultsTabProps {
     config: ScaffoldingConfig;
@@ -81,33 +80,29 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     };
 
     const exportToImportFormat = () => {
-        // ❶ ヘッダは改行なし・完全一致
-        const headers = [
-            '規格コード １０桁（必須）',
-            '数量 ５桁（必須）',
-            '備考 ２０桁',
-        ] as const;
+        const wb = XLSX.utils.book_new();
 
-        // ❷ 行データ：規格→10桁コード、数量は整数化
+        // ヘッダ（半角スペース1個で完全一致）
+        const headers = [
+            "規格コード １０桁（必須）",
+            "数量 ５桁（必須）",
+            "備考 ２０桁",
+        ];
+
         const rows = results.materials.map((item: MaterialItem) => {
-            // ※ SPEC_MAP[item.name] ではなく「規格」で引くのが安全
-            const raw = MILX_CODE_MAP[item.spec] ?? '';   // 例: 'MOK40' → '0001234567'
-            const code10 = raw ? String(raw).padStart(10, '0').slice(-10) : '';
+            // 規格そのものを使用
+            const code10 = String(item.spec ?? "").padStart(10, "0").slice(-10);
             const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
-            return [code10, qty, ''];
+            return [code10, qty, ""];
         });
 
-        // ❸ Sheet1/3列で作成
         const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
-        // 見た目の列幅は任意（あってもなくてもインポート可）
-        ws['!cols'] = [{ wch: 15 }, { wch: 10 }, { wch: 25 }];
+        ws["!cols"] = [{ wch: 15 }, { wch: 10 }, { wch: 25 }];
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
 
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        const today = new Date().toISOString().slice(0,10).replace(/-/g,'').substring(2);
-        saveAs(new Blob([wbout], { type: 'application/octet-stream' }), `${today}_インポート用.xlsx`);
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
     };
 
     return (
