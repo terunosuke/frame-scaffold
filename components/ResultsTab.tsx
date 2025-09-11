@@ -79,37 +79,47 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_枠組足場数量.xlsx`);
     };
 
-    const exportToImportFormat = () => {
-        const wb = XLSX.utils.book_new();
+    const exportToImportFormat = async () => {
+        // 1) テンプレ読み込み（public配下）
+        const templateUrl = "/templates/ImportFile.xlsx";
+        const res = await fetch(templateUrl, { cache: "no-store" });
+        const buffer = await res.arrayBuffer();
 
-        // ヘッダをサンプルと完全一致（余計な全角や改行なし）
-        const headers = [
-            "規格コード １０桁（必須）",
-            "数量 ５桁（必須）",
-            "備考 ２０桁",
-        ];
+        // 2) ブック＆シート取得（先頭シートが Sheet1 前提／そのまま使う）
+        const wb = XLSX.read(buffer, { type: "array" });
+        const sheetName = wb.SheetNames[0]; // "Sheet1"
+        const ws = wb.Sheets[sheetName];
 
+        // 3) 2行目以降のデータ生成（規格は SPEC_MAP[item.name] をそのまま）
         const rows = results.materials.map((item: MaterialItem) => {
-            const spec = String(SPEC_MAP[item.name] ?? "");
-            const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
+            const spec = String(SPEC_MAP[item.name] ?? "");      // 例: "MOK40"
+            const qty  = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
             return [spec, qty, ""];
         });
 
-        const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+        // 4) 既存データ（A2:∞）をクリアしてから貼り付け
+        //    まずは現状の !ref を取得し、A2 以降の既存セルを削除
+        const oldRef = ws["!ref"] || "A1:C1";
+        const range = XLSX.utils.decode_range(oldRef);
+        for (let r = 1; r <= range.e.r; r++) {        // r=1 は2行目
+            for (let c = 0; c <= 2; c++) {              // A..C
+            const addr = XLSX.utils.encode_cell({ r, c });
+            if (ws[addr]) delete ws[addr];
+            }
+        }
 
-        // データ範囲をA1:Cnに限定
-        ws["!ref"] = `A1:C${rows.length + 1}`;
+        // 5) A2 からデータだけ追加（ヘッダはテンプレを保持）
+        XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A2" });
 
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // ← シート名は"Sheet1"固定
+        // 6) データ範囲を A1:Cn に固定（余計な列・行を範囲外にする）
+        const lastRow = rows.length + 1; // ヘッダ1行 + データ行数
+        ws["!ref"] = `A1:C${lastRow}`;
 
-        // ここがポイント：bookTypeを "xlsx" じゃなく "xls" に変えて出力
-        const wbout = XLSX.write(wb, { bookType: "xls", type: "array" });
-
-        const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
-        saveAs(new Blob([wbout], { type: "application/vnd.ms-excel" }), `${today}_インポート用.xls`);
+        // 7) 保存（xlsxのまま。テンプレ構造を保った出力）
+        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        const today = new Date().toISOString().slice(0,10).replace(/-/g,'').substring(2);
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
     };
-
-
 
     return (
         <div>
