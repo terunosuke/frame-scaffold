@@ -80,7 +80,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     };
 
     const exportToImportFormat = async () => {
-        const templateUrl = "/templates/ImportFile.xlsx"; // public配下
+        const templateUrl = "/templates/ImportFile.xlsx";
         const res = await fetch(templateUrl, { cache: "no-store" });
         const buffer = await res.arrayBuffer();
 
@@ -88,42 +88,43 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         const sheetName = wb.SheetNames[0]; // "Sheet1"
         const ws = wb.Sheets[sheetName];
 
-        // 1) ヘッダを1行テキストで正規化（_x000d_等を防ぐ）
-        const setHeader = (addr: string, text: string) => {
-            ws[addr] = { t: "s", v: text };
-        };
-        setHeader("A1", "規格コード １０桁（必須）");
-        setHeader("B1", "数量 ５桁（必須）");
-        setHeader("C1", "備考 ２０桁");
-
-        // 2) 既存のA2:C*をクリア（前回の残骸を消す）
+        // 既存データ（A2:C*）をクリア
         const oldRef = ws["!ref"] || "A1:C1";
         const range = XLSX.utils.decode_range(oldRef);
-        for (let r = 1; r <= range.e.r; r++) {       // r=1 は2行目
-            for (let c = 0; c <= 2; c++) {             // A..C
+        for (let r = 1; r <= range.e.r; r++) {
+            for (let c = 0; c <= 2; c++) {
             const addr = XLSX.utils.encode_cell({ r, c });
             if (ws[addr]) delete ws[addr];
             }
         }
 
-        // 3) A2以降の行データ（規格=SPEC_MAPそのまま、数量は整数、備考は空）
-        const rows = results.materials.map((item: MaterialItem) => {
-            const spec = String(SPEC_MAP[item.name] ?? "");
+        // A2以降に 文字列/数値/文字列 でセルを明示的に作成
+        results.materials.forEach((item: MaterialItem, i: number) => {
+            const r = 1 + i; // データ開始は2行目なので 1+i
+            const a = XLSX.utils.encode_cell({ r, c: 0 }); // A列
+            const b = XLSX.utils.encode_cell({ r, c: 1 }); // B列
+            const c = XLSX.utils.encode_cell({ r, c: 2 }); // C列
+
+            const spec = String(SPEC_MAP[item.name] ?? "");      // 例: "MOK40"
             const qty  = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
-            return [spec, qty, ""];
+
+            ws[a] = { t: "s", v: spec };   // ← 文字列明示
+            ws[b] = { t: "n", v: qty };    // ← 数値明示
+            ws[c] = { t: "s", v: "" };     // ← 文字列明示
         });
 
-        XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A2", skipHeader: true });
+        // 範囲 A1:Cn を固定
+        const lastRow = results.materials.length + 1;
+        ws["!ref"] = `A1:C${lastRow}`;
 
-        // 4) データ範囲をA1:Cnに固定
-        ws["!ref"] = `A1:C${rows.length + 1}`;
+        // 列幅だけ見やすく（インポートには影響なし）
+        ws["!cols"] = [{ wch: 16 }, { wch: 10 }, { wch: 25 }];
 
-        // 5) 保存
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-        const today = new Date().toISOString().slice(0, 10).replace(/-/g, "").substring(2);
-        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
+        const today = new Date().toISOString().slice(0,10).replace(/-/g,"").substring(2);
+        // ★ ファイル名はASCIIに
+        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `ImportFile_${today}.xlsx`);
     };
-
 
     return (
         <div>
