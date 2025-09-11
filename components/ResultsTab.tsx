@@ -82,34 +82,33 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     const exportToImportFormat = () => {
         const wb = XLSX.utils.book_new();
 
-        // ヘッダー：半角スペース1つで完全一致（改行・全角スペースは不可）
+        // ヘッダをサンプルと完全一致（余計な全角や改行なし）
         const headers = [
             "規格コード １０桁（必須）",
             "数量 ５桁（必須）",
             "備考 ２０桁",
         ];
 
-        // 規格は SPEC_MAP[item.name] をそのまま使用（ゼロ埋めしない）
         const rows = results.materials.map((item: MaterialItem) => {
-            const spec = String(SPEC_MAP[item.name] ?? "");   // ← ここがポイント
-            const qty  = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
+            const spec = String(SPEC_MAP[item.name] ?? "");
+            const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
             return [spec, qty, ""];
         });
 
         const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
 
-        // 見やすい列幅（任意）
-        ws["!cols"] = [{ wch: 16 }, { wch: 10 }, { wch: 25 }];
-
-        // データ範囲を A1:Cn に限定（D/Eを“範囲外”にする）
+        // データ範囲をA1:Cnに限定
         ws["!ref"] = `A1:C${rows.length + 1}`;
 
-        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1"); // ← シート名は"Sheet1"固定
 
-        const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+        // ここがポイント：bookTypeを "xlsx" じゃなく "xls" に変えて出力
+        const wbout = XLSX.write(wb, { bookType: "xls", type: "array" });
+
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, '').substring(2);
-        saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
+        saveAs(new Blob([wbout], { type: "application/vnd.ms-excel" }), `${today}_インポート用.xls`);
     };
+
 
 
     return (
