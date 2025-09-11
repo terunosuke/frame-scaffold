@@ -80,7 +80,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     };
 
     const exportToImportFormat = async () => {
-        const templateUrl = "/templates/ImportFile.xlsx"; // public配下に置いたテンプレ
+        const templateUrl = "/templates/ImportFile.xlsx"; // publicに置いたテンプレ
         const res = await fetch(templateUrl, { cache: "no-store" });
         const buffer = await res.arrayBuffer();
 
@@ -88,24 +88,23 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         const sheetName = wb.SheetNames[0]; // "Sheet1"
         const ws = wb.Sheets[sheetName];
 
-        // rows: 規格はそのまま、数量は整数、備考は空
+        // 2行目以降のデータだけを生成
         const rows = results.materials.map((item: MaterialItem) => {
             const spec = String(SPEC_MAP[item.name] ?? "");
             const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
             return [spec, qty, ""];
         });
 
-        // ヘッダはテンプレのまま残す、A2から差し込み
-        XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A2" });
+        // ヘッダは触らず、A2から書き込み
+        XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A2", skipHeader: true });
 
-        // データ範囲を A1:Cn に固定
+        // 範囲を再計算
         ws["!ref"] = `A1:C${rows.length + 1}`;
 
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, "").substring(2);
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
     };
-
 
     return (
         <div>
