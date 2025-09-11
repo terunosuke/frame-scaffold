@@ -80,7 +80,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
     };
 
     const exportToImportFormat = async () => {
-        const templateUrl = "/templates/ImportFile.xlsx"; // publicに置いたテンプレ
+        const templateUrl = "/templates/ImportFile.xlsx"; // public配下
         const res = await fetch(templateUrl, { cache: "no-store" });
         const buffer = await res.arrayBuffer();
 
@@ -88,23 +88,42 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
         const sheetName = wb.SheetNames[0]; // "Sheet1"
         const ws = wb.Sheets[sheetName];
 
-        // 2行目以降のデータだけを生成
+        // 1) ヘッダを1行テキストで正規化（_x000d_等を防ぐ）
+        const setHeader = (addr: string, text: string) => {
+            ws[addr] = { t: "s", v: text };
+        };
+        setHeader("A1", "規格コード １０桁（必須）");
+        setHeader("B1", "数量 ５桁（必須）");
+        setHeader("C1", "備考 ２０桁");
+
+        // 2) 既存のA2:C*をクリア（前回の残骸を消す）
+        const oldRef = ws["!ref"] || "A1:C1";
+        const range = XLSX.utils.decode_range(oldRef);
+        for (let r = 1; r <= range.e.r; r++) {       // r=1 は2行目
+            for (let c = 0; c <= 2; c++) {             // A..C
+            const addr = XLSX.utils.encode_cell({ r, c });
+            if (ws[addr]) delete ws[addr];
+            }
+        }
+
+        // 3) A2以降の行データ（規格=SPEC_MAPそのまま、数量は整数、備考は空）
         const rows = results.materials.map((item: MaterialItem) => {
             const spec = String(SPEC_MAP[item.name] ?? "");
-            const qty = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
+            const qty  = Number.isFinite(item.quantity) ? Math.round(item.quantity) : 0;
             return [spec, qty, ""];
         });
 
-        // ヘッダは触らず、A2から書き込み
         XLSX.utils.sheet_add_aoa(ws, rows, { origin: "A2", skipHeader: true });
 
-        // 範囲を再計算
+        // 4) データ範囲をA1:Cnに固定
         ws["!ref"] = `A1:C${rows.length + 1}`;
 
+        // 5) 保存
         const wbout = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const today = new Date().toISOString().slice(0, 10).replace(/-/g, "").substring(2);
         saveAs(new Blob([wbout], { type: "application/octet-stream" }), `${today}_インポート用.xlsx`);
     };
+
 
     return (
         <div>
