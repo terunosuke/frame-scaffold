@@ -80,7 +80,7 @@ const App: React.FC = () => {
         toeboardLevels: '',
         footingType: 'oneSideToeboardOneSideHandrail',
         tsumaCount: 2,
-        stairMode: 'notTop',
+        stairMode: 'none',
         stairLevels: '',
         stairSpanCount: 1,
         wallTieMode: 'none',
