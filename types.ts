@@ -22,7 +22,7 @@ export interface ScaffoldingConfig {
     heightMode: 'all1700' | 'custom';
     customHeights: CustomHeight[];
     pillarSelection: PillarSelection;
-    isBottom: boolean;
+    jackBaseMode: 'none' | 'jackBaseOnly' | 'jackBaseWithTaiko';
     jackBaseOption: 'allSB20' | 'allSB40' | 'custom';
     sb20Count: number;
     sb40Count: number;

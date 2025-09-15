@@ -93,6 +93,14 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         return `${sideText}（${levelText}・3段/1枚計算）`;
     })();
 
+    // ジャッキベースの表示用フォーマット
+    const jackBaseSummary = (() => {
+        if (config.jackBaseMode === 'none') return '不要';
+        if (config.jackBaseMode === 'jackBaseOnly') return '必要（ジャッキベースのみ）';
+        if (config.jackBaseMode === 'jackBaseWithTaiko') return '必要（ジャッキベース＋タイコ）';
+        return '不要';
+    })();
+
     // 列構成の表示用フォーマット
     const frameCols = config.frameCols || {};
     const frameSummary = Object.entries(frameCols)
@@ -109,7 +117,7 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         { item: "合計列数", value: totalCols },
         { item: "段数", value: config.levelCount },
         { item: "足場高さ", value: `${results.totalHeight} mm` },
-        { item: "最下段である（ジャッキベース・敷板が必要）", value: config.isBottom ? "はい" : "いいえ" },
+        { item: "ジャッキベース", value: jackBaseSummary },
         { item: "アンチ設置段", value: antiSummary },
         { item: "巾木設置段", value: toeboardSummary },
         { item: "妻側手すり", value: tsumaSummary },

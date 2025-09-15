@@ -92,8 +92,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             ? config.levelCount * 1700 // 全段1700mmの場合
             : config.customHeights.reduce((sum, item) => sum + (item.height * item.count), 0); // カスタム指定の場合
         
-        // ジャッキベースの必要数を計算（最下段の場合のみ）
-        const jackBaseCount = config.isBottom ? (spanTotal + 1) * (faceColTotal + 1) : 0;
+        // ジャッキベースの必要数を計算（ジャッキベースが必要な場合のみ）
+        const jackBaseCount = config.jackBaseMode !== 'none' ? (spanTotal + 1) * (faceColTotal + 1) : 0;
         
         // --- 2. 入力値の妥当性検証 ---
         const totalCustomLevels = config.customHeights.reduce((sum, item) => sum + item.count, 0);
@@ -393,7 +393,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         ];
 
         // 各部材の数量を`coefsCombined`に集約
-        if (config.isBottom) {
+        if (config.jackBaseMode !== 'none') {
             if (config.jackBaseOption === 'allSB20') coefsCombined["ジャッキベース（20）"] = jackBaseCount;
             else if (config.jackBaseOption === 'allSB40') coefsCombined["ジャッキベース（40）"] = jackBaseCount;
             else if (config.jackBaseOption === 'custom') {
@@ -401,14 +401,16 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
                 if (config.sb40Count > 0) coefsCombined["ジャッキベース（40）"] = config.sb40Count;
             }
         }
-        if (config.taiko40 > 0) coefsCombined["タイコ（40）"] = config.taiko40;
-        if (config.taiko80 > 0) coefsCombined["タイコ（80）"] = config.taiko80;
+        if (config.jackBaseMode === 'jackBaseWithTaiko') {
+            if (config.taiko40 > 0) coefsCombined["タイコ（40）"] = config.taiko40;
+            if (config.taiko80 > 0) coefsCombined["タイコ（80）"] = config.taiko80;
+        }
         if (stair_count > 0) coefsCombined["階段"] = stair_count;
         
         // 他のカテゴリの部材をマージ
         Object.assign(
             coefsCombined,
-            config.isBottom ? floorPlateItems : {},
+            config.jackBaseMode !== 'none' ? floorPlateItems : {},
             frame_items,
             brace_items,
             handrail_items,

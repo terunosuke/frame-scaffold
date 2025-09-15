@@ -153,8 +153,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
                             {/* ジャッキベース */}
                             <h4 className="font-semibold text-green-800">◎ ジャッキベース</h4>
-                            <InputGroup label="最下段である（ジャッキベース・敷板必要）" as="checkbox" checked={config.isBottom} onChange={e => setConfigField('isBottom', e.target.checked)} />
-                            {config.isBottom && (
+                            <InputGroup label="" as="select" value={config.jackBaseMode} onChange={e => setConfigField('jackBaseMode', e.target.value as 'none' | 'jackBaseOnly' | 'jackBaseWithTaiko')}>
+                                <option value="none">不要</option>
+                                <option value="jackBaseOnly">必要（ジャッキベースのみ）</option>
+                                <option value="jackBaseWithTaiko">必要（ジャッキベース＋タイコ）</option>
+                            </InputGroup>
+                            {config.jackBaseMode !== 'none' && (
                                 <>
                                     <InputGroup label="ジャッキベースの種類" as="select" value={config.jackBaseOption} onChange={e => setConfigField('jackBaseOption', e.target.value as 'allSB20' | 'allSB40' | 'custom')}>
                                         <option value="allSB20">全てSB20（H58-H230）</option>
@@ -170,8 +174,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                                             {validation.jackBaseStatus === 'ok' && <Alert type="success" message="支柱の箇所数とジャッキの本数が一致しています" />}
                                         </div>
                                     )}
-                                    <InputGroup label="タイコ40" type="number" min={0} value={config.taiko40} onChange={e => setConfigField('taiko40', parseInt(e.target.value) || 0)} />
-                                    <InputGroup label="タイコ80" type="number" min={0} value={config.taiko80} onChange={e => setConfigField('taiko80', parseInt(e.target.value) || 0)} />
+                                    {config.jackBaseMode === 'jackBaseWithTaiko' && (
+                                        <div className="space-y-2">
+                                            <InputGroup label="タイコ40" type="number" min={0} value={config.taiko40} onChange={e => setConfigField('taiko40', parseInt(e.target.value) || 0)} />
+                                            <InputGroup label="タイコ80" type="number" min={0} value={config.taiko80} onChange={e => setConfigField('taiko80', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
                                 </>
                             )}
 

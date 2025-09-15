@@ -68,7 +68,7 @@ const App: React.FC = () => {
         heightMode: 'all1700',
         customHeights: [{ height: 1700, count: 3 }],
         pillarSelection: { 225: 0, 450: 0, 900: 0, 1800: 0, 2700: 0, 3600: 0 },
-        isBottom: true,
+        jackBaseMode: 'jackBaseOnly',
         jackBaseOption: 'allSB20',
         sb20Count: 0,
         sb40Count: 0,
