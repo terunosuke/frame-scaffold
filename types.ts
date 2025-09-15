@@ -48,6 +48,9 @@ export interface ScaffoldingConfig {
     perimeterSheetMode: 'none' | 'required';
     perimeterSheetLevelMode: 'all' | 'custom';
     perimeterSheetLevelCount: number;
+    tsumaSheetMode: 'none' | 'required';
+    tsumaSheetLevelMode: 'all' | 'custom';
+    tsumaSheetLevelCount: number;
     memo: string;
 }
 

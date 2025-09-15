@@ -189,7 +189,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                             )}
 
                             {/* 足元選択 */}
-                            <h4 className="font-semibold text-green-800 mt-6">◎ 格段の足元構成</h4>
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 各段の足元構成</h4>
                             <InputGroup label="" as="select" value={config.footingType} onChange={e => setConfigField('footingType', e.target.value as 'oneSideToeboardOneSideHandrail' | 'bothSideToeboard' | 'bothSideToeboardAndHandrail' | 'bothSideHandrail')}>
                                 <option value="oneSideToeboardOneSideHandrail">片面巾木＋片面下桟</option>
                                 <option value="bothSideToeboard">両面巾木</option>
@@ -225,19 +225,36 @@ export const InputForm: React.FC<InputFormProps> = ({
                                 <option value={0}>不要→0面</option>
                             </InputGroup>
 
+                            {/* 妻側シート */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 妻側シート</h4>
+                            <InputGroup label="" as="select" value={config.tsumaSheetMode} onChange={e => setConfigField('tsumaSheetMode', e.target.value as 'none' | 'required')}>
+                                <option value="none">不要</option>
+                                <option value="required">必要</option>
+                            </InputGroup>
+                            {config.tsumaSheetMode === 'required' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="必要段数（3段/1枚として計算します）" as="select" value={config.tsumaSheetLevelMode} onChange={e => setConfigField('tsumaSheetLevelMode', e.target.value as 'all' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="custom">段数指定</option>
+                                    </InputGroup>
+                                    {config.tsumaSheetLevelMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段数" type="number" placeholder="指定する段数を入力" value={config.tsumaSheetLevelCount} min={0} onChange={e => setConfigField('tsumaSheetLevelCount', parseInt(e.target.value) || 0)} />
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
                             {/* 階段設置 */}
                             <h4 className="font-semibold text-green-800 mt-6">◎ 階段設置</h4>
                             <InputGroup label="" as="select" value={config.stairMode} onChange={e => setConfigField('stairMode', e.target.value as 'none' | 'notTop' | 'custom')}>
                                 <option value="none">設置しない</option>
-                                <option value="notTop">最上段以外</option>
-                                <option value="custom">指定段のみ</option>
+                                <option value="notTop">設置する（最上段以外）</option>
+                                <option value="custom">設置する（指定段のみ）</option>
                             </InputGroup>
-                            {config.stairMode !== 'none' && (
-                                <div className="ml-4 space-y-2">
-                                    <InputGroup label="設置スパン数" type="number" min={1} value={config.stairSpanCount} onChange={e => setConfigField('stairSpanCount', parseInt(e.target.value) || 1)} />
-                                    {config.stairMode === 'custom' && (
-                                        <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
-                                    )}
+                            {config.stairMode === 'custom' && (
+                                <div className="ml-4">
+                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
                                 </div>
                             )}
 

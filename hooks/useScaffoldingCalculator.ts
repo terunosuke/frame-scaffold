@@ -329,6 +329,32 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             }
         }
 
+        // 妻側シートの計算
+        const tsumaSheet_items: { [key: string]: number } = {};
+        if (config.tsumaSheetMode === 'required') {
+            // 必要段数の計算
+            let tsumaSheetLevels = 0;
+            if (config.tsumaSheetLevelMode === 'all') {
+                tsumaSheetLevels = config.levelCount;
+            } else {
+                tsumaSheetLevels = config.tsumaSheetLevelCount;
+            }
+
+            if (tsumaSheetLevels > 0) {
+                // 3段/1枚として計算（切り上げ）
+                const sheetsPerTsuma = Math.ceil(tsumaSheetLevels / 3);
+
+                // 枠幅ごとにメッシュシートを計算（妻側の面数分）
+                for (const [width, colCount] of Object.entries(frameCols)) {
+                    if (colCount > 0) {
+                        const key = `メッシュシート（${width}）`;
+                        const qty = colCount * sheetsPerTsuma * tsumaSides;
+                        tsumaSheet_items[key] = (tsumaSheet_items[key] || 0) + qty;
+                    }
+                }
+            }
+        }
+
         // --- 4. 結果の整形 ---
 
         // サイズ順ソート関数
@@ -392,7 +418,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             tsumaToeboard_items,
             wallTie_items,
             layerNet_items,
-            perimeterSheet_items
+            perimeterSheet_items,
+            tsumaSheet_items
         );
 
         // 最終的な部材リストを生成
