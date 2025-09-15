@@ -220,18 +220,19 @@ export const InputForm: React.FC<InputFormProps> = ({
                             {/* 妻側手すり */}
                             <h4 className="font-semibold text-green-800">◎ 妻側手すり</h4>
                             <InputGroup label="" as="select" value={config.tsumaCount} onChange={e => setConfigField('tsumaCount', parseInt(e.target.value) as 0|1|2)}>
-                                <option value={2}>両側必要（新規足場）→2面</option>
-                                <option value={1}>片側のみ→1面</option>
-                                <option value={0}>不要→0面</option>
+                                <option value={2}>両妻必要</option>
+                                <option value={1}>片妻のみ</option>
+                                <option value={0}>不要</option>
                             </InputGroup>
 
                             {/* 妻側シート */}
                             <h4 className="font-semibold text-green-800 mt-6">◎ 妻側シート</h4>
-                            <InputGroup label="" as="select" value={config.tsumaSheetMode} onChange={e => setConfigField('tsumaSheetMode', e.target.value as 'none' | 'required')}>
-                                <option value="none">不要</option>
-                                <option value="required">必要</option>
+                            <InputGroup label="" as="select" value={config.tsumaSheetCount} onChange={e => setConfigField('tsumaSheetCount', parseInt(e.target.value) as 0|1|2)}>
+                                <option value={2}>両妻必要</option>
+                                <option value={1}>片妻のみ</option>
+                                <option value={0}>不要</option>
                             </InputGroup>
-                            {config.tsumaSheetMode === 'required' && (
+                            {config.tsumaSheetCount > 0 && (
                                 <div className="ml-4 space-y-2">
                                     <InputGroup label="必要段数（3段/1枚として計算します）" as="select" value={config.tsumaSheetLevelMode} onChange={e => setConfigField('tsumaSheetLevelMode', e.target.value as 'all' | 'custom')}>
                                         <option value="all">全段</option>

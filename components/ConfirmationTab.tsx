@@ -73,12 +73,24 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
     // 外周シートの表示用フォーマット
     const perimeterSheetSummary = (() => {
         if (config.perimeterSheetMode === 'none') return '不要';
-        
+
         let levelText = '';
         if (config.perimeterSheetLevelMode === 'all') levelText = '全段';
         else levelText = `${config.perimeterSheetLevelCount}段`;
 
         return `必要（${levelText}・3段/1枚計算）`;
+    })();
+
+    // 妻側シートの表示用フォーマット
+    const tsumaSheetSummary = (() => {
+        if (config.tsumaSheetCount === 0) return '不要（0面）';
+
+        let levelText = '';
+        if (config.tsumaSheetLevelMode === 'all') levelText = '全段';
+        else levelText = `${config.tsumaSheetLevelCount}段`;
+
+        const sideText = config.tsumaSheetCount === 2 ? '両妻必要（2面）' : '片妻のみ（1面）';
+        return `${sideText}（${levelText}・3段/1枚計算）`;
     })();
 
     // 列構成の表示用フォーマット
@@ -105,6 +117,7 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         { item: "壁つなぎ", value: wallTieSummary },
         { item: "層間養生ネット", value: layerNetSummary },
         { item: "外周シート", value: perimeterSheetSummary },
+        { item: "妻側シート", value: tsumaSheetSummary },
     ];
     
     return (

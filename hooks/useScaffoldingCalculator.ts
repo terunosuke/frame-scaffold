@@ -331,7 +331,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
 
         // 妻側シートの計算
         const tsumaSheet_items: { [key: string]: number } = {};
-        if (config.tsumaSheetMode === 'required') {
+        if (config.tsumaSheetCount > 0) {
             // 必要段数の計算
             let tsumaSheetLevels = 0;
             if (config.tsumaSheetLevelMode === 'all') {
@@ -344,11 +344,11 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
                 // 3段/1枚として計算（切り上げ）
                 const sheetsPerTsuma = Math.ceil(tsumaSheetLevels / 3);
 
-                // 枠幅ごとにメッシュシートを計算（妻側の面数分）
+                // 枠幅ごとにメッシュシートを計算（選択された妻側の面数分）
                 for (const [width, colCount] of Object.entries(frameCols)) {
                     if (colCount > 0) {
                         const key = `メッシュシート（${width}）`;
-                        const qty = colCount * sheetsPerTsuma * tsumaSides;
+                        const qty = colCount * sheetsPerTsuma * config.tsumaSheetCount;
                         tsumaSheet_items[key] = (tsumaSheet_items[key] || 0) + qty;
                     }
                 }

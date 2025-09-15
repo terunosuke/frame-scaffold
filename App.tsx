@@ -94,7 +94,7 @@ const App: React.FC = () => {
         perimeterSheetMode: 'none',
         perimeterSheetLevelMode: 'all',
         perimeterSheetLevelCount: 0,
-        tsumaSheetMode: 'none',
+        tsumaSheetCount: 0,
         tsumaSheetLevelMode: 'all',
         tsumaSheetLevelCount: 0,
         memo: '',
