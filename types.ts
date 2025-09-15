@@ -32,6 +32,7 @@ export interface ScaffoldingConfig {
     antiLevels: string;
     toeboardMode: 'all' | 'sameAsAnti' | 'custom';
     toeboardLevels: string;
+    footingType: 'oneSideToeboardOneSideHandrail' | 'bothSideToeboard' | 'bothSideToeboardAndHandrail' | 'bothSideHandrail';
     tsumaCount: 0 | 1 | 2;
     stairMode: 'none' | 'notTop' | 'custom';
     stairLevels: string;

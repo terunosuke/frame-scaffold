@@ -188,17 +188,30 @@ export const InputForm: React.FC<InputFormProps> = ({
                                 </div>
                             )}
 
-                            {/* 巾木設置段 */}
-                            <h4 className="font-semibold text-green-800 mt-6">◎ 巾木設置段（各段の下部に設置とする）</h4>
-                            <InputGroup label="" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
-                                <option value="all">全段</option>
-                                <option value="sameAsAnti">アンチと同じ段</option>
-                                <option value="custom">指定段</option>
+                            {/* 足元選択 */}
+                            <h4 className="font-semibold text-green-800 mt-6">◎ 格段の足元構成</h4>
+                            <InputGroup label="" as="select" value={config.footingType} onChange={e => setConfigField('footingType', e.target.value as 'oneSideToeboardOneSideHandrail' | 'bothSideToeboard' | 'bothSideToeboardAndHandrail' | 'bothSideHandrail')}>
+                                <option value="oneSideToeboardOneSideHandrail">片面巾木＋片面下桟</option>
+                                <option value="bothSideToeboard">両面巾木</option>
+                                <option value="bothSideToeboardAndHandrail">両面巾木＋両面下桟</option>
+                                <option value="bothSideHandrail">両面下桟</option>
                             </InputGroup>
-                            {config.toeboardMode === 'custom' && (
-                                <div className="ml-4">
-                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.toeboardLevels} onChange={e => setConfigField('toeboardLevels', e.target.value)} />
-                                </div>
+
+                            {/* 巾木設置段（両面下桟の場合は非表示） */}
+                            {config.footingType !== 'bothSideHandrail' && (
+                                <>
+                                    <h4 className="font-semibold text-green-800 mt-6">◎ 巾木設置段（各段の下部に設置とする）</h4>
+                                    <InputGroup label="" as="select" value={config.toeboardMode} onChange={e => setConfigField('toeboardMode', e.target.value as 'all' | 'sameAsAnti' | 'custom')}>
+                                        <option value="all">全段</option>
+                                        <option value="sameAsAnti">アンチと同じ段</option>
+                                        <option value="custom">指定段</option>
+                                    </InputGroup>
+                                    {config.toeboardMode === 'custom' && (
+                                        <div className="ml-4">
+                                            <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,3,5" value={config.toeboardLevels} onChange={e => setConfigField('toeboardLevels', e.target.value)} />
+                                        </div>
+                                    )}
+                                </>
                             )}
                         </div>
 

@@ -69,7 +69,7 @@ return (
                 </div>
             </div>
 
-            {/* ← ここから追加 */}
+            {/* ← ここから追加 *
             <div className="px-4 pb-4 space-y-1">
                 <p className="text-sm text-gray-700">
                 <span className="mr-1">⚠️</span>
@@ -77,14 +77,10 @@ return (
                 </p>
                 <p className="text-sm text-gray-700">
                 <span className="mr-1">⚠️</span>
-                メッシュシート・ネット・壁つなぎは算出対象外
-                </p>
-                <p className="text-sm text-gray-700">
-                <span className="mr-1">⚠️</span>
                 敷板は足場全長から4m割+余りで算出（過剰寄り）
                 </p>
             </div>
-            {/* ← ここまで追加 */}
+             ← ここまで追加 */}
             </Card>
 
         {/* 右カード：AIフォーム */}

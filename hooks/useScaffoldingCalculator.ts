@@ -203,11 +203,27 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
                 anti_items[key] = (anti_items[key] || 0) + perSpanCount * count * antiLevelsResolved.length;
             }
 
-            // 巾木の計算 (長手方向のみ、片側に設置)
-            toeboard_items[`巾木（${len}）`] = (toeboard_items[`巾木（${len}）`] || 0) + count * toeboardLevelsResolved.length * 1;
+            // 巾木の計算（足元選択に応じて係数を変更）
+            let toeboardMultiplier = 1; // デフォルト（片面）
+            if (config.footingType === 'bothSideToeboard' || config.footingType === 'bothSideToeboardAndHandrail') {
+                toeboardMultiplier = 2; // 両面巾木
+            } else if (config.footingType === 'bothSideHandrail') {
+                toeboardMultiplier = 0; // 両面下桟のみの場合は巾木なし
+            }
+            if (toeboardMultiplier > 0) {
+                toeboard_items[`巾木（${len}）`] = (toeboard_items[`巾木（${len}）`] || 0) + count * toeboardLevelsResolved.length * toeboardMultiplier;
+            }
 
-            // 手すりの計算（全段に必要、1スパン×1段×片側に設置）
-            handrail_items[`長手下桟（${len}）`] = (handrail_items[`長手下桟（${len}）`] || 0) + count * config.levelCount * 1;
+            // 下桟の計算（足元選択に応じて係数を変更）
+            let handrailMultiplier = 1; // デフォルト（片面）
+            if (config.footingType === 'bothSideToeboardAndHandrail' || config.footingType === 'bothSideHandrail') {
+                handrailMultiplier = 2; // 両面下桟
+            } else if (config.footingType === 'bothSideToeboard') {
+                handrailMultiplier = 0; // 両面巾木のみの場合は下桟なし
+            }
+            if (handrailMultiplier > 0) {
+                handrail_items[`長手下桟（${len}）`] = (handrail_items[`長手下桟（${len}）`] || 0) + count * toeboardLevelsResolved.length * handrailMultiplier;
+            }
         }
         
         // その他の独立した部材の計算
@@ -369,6 +385,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             config.isBottom ? floorPlateItems : {},
             frame_items,
             brace_items,
+            handrail_items,
             anti_items,
             toeboard_items,
             tsumaHandrail_items,

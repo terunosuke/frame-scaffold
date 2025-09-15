@@ -78,6 +78,7 @@ const App: React.FC = () => {
         antiLevels: '1,2,3',
         toeboardMode: 'sameAsAnti',
         toeboardLevels: '',
+        footingType: 'oneSideToeboardOneSideHandrail',
         tsumaCount: 2,
         stairMode: 'notTop',
         stairLevels: '',
