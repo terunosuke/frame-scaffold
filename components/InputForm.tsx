@@ -142,8 +142,10 @@ export const InputForm: React.FC<InputFormProps> = ({
                                     {validation.customHeightStatus === 'ok' && <Alert type="success" message="指定段数が一致しました" />}
                                 </div>
                             )}
-                            <div className="pt-2 text-sm font-medium text-gray-600">足場の総高さ: H {totalHeight} mm</div>
-                            <div className="pt-2 text-sm font-medium text-gray-600">  （ジャッキ含まず）</div>
+                            <div className="pt-2 text-sm font-medium text-gray-600">
+                                <div>足場の総高さ: H {totalHeight} mm</div>
+                                <div>（ジャッキ含まず）</div>
+                            </div>
                         </div>
                     </div>
                 </Card>
