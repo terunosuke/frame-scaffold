@@ -28,11 +28,12 @@ export const ConfirmationTab: React.FC<ConfirmationTabProps> = ({ config, result
         'custom': `指定段 (${config.toeboardLevels})`
     }[config.toeboardMode];
 
-    const stairSummary = {
-        'none': '設置しない',
-        'notTop': '最上段以外',
-        'custom': `指定段 (${config.stairLevels})`
-    }[config.stairMode];
+    const stairSummary = config.stairMode === 'none'
+        ? '設置しない'
+        : `${config.stairSpanCount}スパン × ${{
+            'notTop': '最上段以外',
+            'custom': `指定段 (${config.stairLevels})`
+        }[config.stairMode]}`;
 
     const tsumaSummary = {
         2: '両側必要（2面）',

@@ -36,6 +36,7 @@ export interface ScaffoldingConfig {
     tsumaCount: 0 | 1 | 2;
     stairMode: 'none' | 'notTop' | 'custom';
     stairLevels: string;
+    stairSpanCount: number;
     wallTieMode: 'none' | 'KTS16' | 'KTS20' | 'KTS30' | 'KTS45' | 'KTS60' | 'KTS80' | 'KTS100';
     wallTieLevelMode: 'all' | 'alternate' | 'custom';
     wallTieLevelCount: number;

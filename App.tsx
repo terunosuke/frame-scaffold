@@ -82,6 +82,7 @@ const App: React.FC = () => {
         tsumaCount: 2,
         stairMode: 'notTop',
         stairLevels: '',
+        stairSpanCount: 1,
         wallTieMode: 'none',
         wallTieLevelMode: 'all',
         wallTieLevelCount: 0,

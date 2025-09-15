@@ -232,9 +232,12 @@ export const InputForm: React.FC<InputFormProps> = ({
                                 <option value="notTop">最上段以外</option>
                                 <option value="custom">指定段のみ</option>
                             </InputGroup>
-                            {config.stairMode === 'custom' && (
-                                <div className="ml-4">
-                                    <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
+                            {config.stairMode !== 'none' && (
+                                <div className="ml-4 space-y-2">
+                                    <InputGroup label="設置スパン数" type="number" min={1} value={config.stairSpanCount} onChange={e => setConfigField('stairSpanCount', parseInt(e.target.value) || 1)} />
+                                    {config.stairMode === 'custom' && (
+                                        <InputGroup label="段番号 (カンマ区切り)" placeholder="例: 1,2,4" value={config.stairLevels} onChange={e => setConfigField('stairLevels', e.target.value)} />
+                                    )}
                                 </div>
                             )}
 

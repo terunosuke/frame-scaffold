@@ -228,7 +228,7 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         
         // その他の独立した部材の計算
 
-        const stair_count = config.faceCount * stairLevelsResolved.length; // 階段
+        const stair_count = config.stairSpanCount * stairLevelsResolved.length; // 階段（設置スパン数×設置段数）
         
         // 壁つなぎの計算
         const wallTie_items: { [key: string]: number } = {};
