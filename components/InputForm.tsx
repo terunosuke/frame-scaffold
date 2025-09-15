@@ -143,6 +143,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                                 </div>
                             )}
                             <div className="pt-2 text-sm font-medium text-gray-600">足場の総高さ: H {totalHeight} mm</div>
+                            <div className="pt-2 text-sm font-medium text-gray-600">  （ジャッキ含まず）</div>
                         </div>
                     </div>
                 </Card>
