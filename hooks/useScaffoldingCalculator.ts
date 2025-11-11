@@ -347,7 +347,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
                 // 枠幅ごとにメッシュシートを計算（選択された妻側の面数分）
                 for (const [width, colCount] of Object.entries(frameCols)) {
                     if (colCount > 0) {
-                        const key = `メッシュシート（${width}）`;
+                        // 妻側メッシュは通常のメッシュシートとキーが被らないように「妻側」プレフィックスを付与
+                        const key = `妻側メッシュシート（${width}）`;
                         const qty = colCount * sheetsPerTsuma * config.tsumaSheetCount;
                         tsumaSheet_items[key] = (tsumaSheet_items[key] || 0) + qty;
                     }
@@ -389,6 +390,8 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             "階段",
             "KTS16", "KTS20", "KTS30", "KTS45", "KTS60", "KTS80", "KTS100",
             "層間ネット", "層間ネットブラケット",
+            // 妻側メッシュシートを通常メッシュシートより前に表示
+            "妻側メッシュシート（450）", "妻側メッシュシート（600）", "妻側メッシュシート（900）", "妻側メッシュシート（1200）", "妻側メッシュシート（1500）", "妻側メッシュシート（1800）",
             "メッシュシート（600）", "メッシュシート（900）", "メッシュシート（1200）", "メッシュシート（1500）", "メッシュシート（1800）"
         ];
 
