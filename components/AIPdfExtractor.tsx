@@ -87,7 +87,13 @@ return (
         <Card title="🤖 図面/画像から自動入力 (AI)" defaultOpen alwaysOpen className="w-full md:w-1/2">
             <div className="p-4 space-y-4 h-full flex flex-col">
                 <p className="text-sm text-gray-600">
-                    PDF、JPEG、PNG形式の足場図をアップロードすると、AIがスパン数や段数などの基本情報を自動で読み取り、以下の項目に入力します。
+                    AIがスパン数や段数などの大枠情報を読み取り、以下の項目に入力します。（PDF、jpeg、png）
+                </p>
+                <p className="text-sm font-bold text-gray-700">
+                    現在、現場情報のわかる図面のアップロードは禁止とさせて頂いております。
+                </p>
+                <p className="text-sm font-bold text-gray-700">
+                    今後セキュリティ強化次第、制限解除予定です。
                 </p>
 
                 {/* ファイル選択 */}
