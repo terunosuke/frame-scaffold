@@ -150,7 +150,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                     </div>
                 </Card>
 
-                <Card title="個別部材の設定">
+                <Card title="個別部材の設定" defaultOpen>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
                         {/* Jack Base + Anti + Toeboard */}
                         <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-100">
@@ -355,7 +355,7 @@ export const InputForm: React.FC<InputFormProps> = ({
                     </div>
                 </Card>
 
-                <Card title="📝 フリーメモ">
+                <Card title="📝 フリーメモ" defaultOpen>
                     <div className="p-4">
                         <textarea
                             className="w-full p-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-150 ease-in-out"

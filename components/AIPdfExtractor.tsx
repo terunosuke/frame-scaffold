@@ -51,7 +51,7 @@ export const AIPdfExtractor: React.FC<AIPdfExtractorProps> = ({ isAnalyzing, ana
 return (
     <div className="flex flex-col md:flex-row gap-6 items-stretch">
         {/* 左カード：解説図 */}
-            <Card title="入力フォームの解説" defaultOpen className="w-full md:w-1/2">
+            <Card title="入力フォームの解説" defaultOpen alwaysOpen className="w-full md:w-1/2">
             <div className="flex justify-center items-center gap-6 p-4 h-full">
                 <div className="flex-1 flex justify-center">
                 <img
@@ -84,7 +84,7 @@ return (
             </Card>
 
         {/* 右カード：AIフォーム */}
-        <Card title="🤖 図面/画像から自動入力 (AI)" defaultOpen className="w-full md:w-1/2">
+        <Card title="🤖 図面/画像から自動入力 (AI)" defaultOpen alwaysOpen className="w-full md:w-1/2">
             <div className="p-4 space-y-4 h-full flex flex-col">
                 <p className="text-sm text-gray-600">
                     PDF、JPEG、PNG形式の足場図をアップロードすると、AIがスパン数や段数などの基本情報を自動で読み取り、以下の項目に入力します。
