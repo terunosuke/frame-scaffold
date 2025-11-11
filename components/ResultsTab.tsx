@@ -134,8 +134,8 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <SummaryCard title="総重量" value={`${results.totalWeight.toFixed(2)} kg`} icon="⚖️" bgColor="bg-green-50" />
-                <SummaryCard title="ユニック車" value={results.transportUnic} icon="🏗️" />
-                <SummaryCard title="平車" value={results.transportFlatbed} icon="🚛" />
+                <SummaryCard title="ユニック車（重量のみ考慮）" value={results.transportUnic} icon="🏗️" />
+                <SummaryCard title="平車（重量のみ考慮）" value={results.transportFlatbed} icon="🚛" />
             </div>
             
             <div className="bg-green-50 p-4 rounded-lg mb-8 border border-green-200">
