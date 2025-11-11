@@ -460,40 +460,48 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
             "⚠️ 超過（車両を分割してください）";
             
         // 車両分割オプションの計算
-        const splitOptions: string[] = [];
-        const truck_caps = { "4tＵ": 2000, "6tＵ": 6500, "12tＵ": 12000 };
-        for (let t1 = 0; t1 <= 5; t1++) {
-            for (let t2 = 0; t2 <= 4; t2++) {
-                for (let t3 = 0; t3 <= 4; t3++) {
-                    if (t1 + t2 + t3 === 0) continue;
-                    const total_cap = t1 * truck_caps["4tＵ"] + t2 * truck_caps["6tＵ"] + t3 * truck_caps["12tＵ"];
-                    if (total_cap >= W && total_cap <= W * 1.5 && total_cap <= 48000) {
-                        const parts = [];
-                        if (t1 > 0) parts.push(`4tＵ×${t1}`);
-                        if (t2 > 0) parts.push(`6tＵ×${t2}`);
-                        if (t3 > 0) parts.push(`12tＵ×${t3}`);
-                        if (parts.length > 0) {
-                            splitOptions.push(parts.join(" + "));
-                        }
-                    }
-                }
+        let splitOptions: string[] = [];
+         const truck_caps = { "4tＵ": 2000, "6tＵ": 6500, "12tＵ": 12000 };
+         for (let t1 = 0; t1 <= 5; t1++) {
+             for (let t2 = 0; t2 <= 4; t2++) {
+                 for (let t3 = 0; t3 <= 4; t3++) {
+                     if (t1 + t2 + t3 === 0) continue;
+                     const total_cap = t1 * truck_caps["4tＵ"] + t2 * truck_caps["6tＵ"] + t3 * truck_caps["12tＵ"];
+                     if (total_cap >= W && total_cap <= W * 1.5 && total_cap <= 48000) {
+                         const parts = [];
+                         if (t1 > 0) parts.push(`4tＵ×${t1}`);
+                         if (t2 > 0) parts.push(`6tＵ×${t2}`);
+                         if (t3 > 0) parts.push(`12tＵ×${t3}`);
+                         if (parts.length > 0) {
+                             splitOptions.push(parts.join(" + "));
+                         }
+                     }
+                 }
+             }
+         }
+         splitOptions.sort((a, b) => a.length - b.length);
+         // 「4tＵ×1」のように1車しか提案が無い場合は提案を表示しない（UIでエラーマークを出すため）
+         if (splitOptions.length === 1) {
+            const only = splitOptions[0];
+            // '+' を含まず末尾が "×1" の場合を単一車両提案と見なす
+            if (!only.includes('+') && /×1$/.test(only)) {
+                splitOptions = [];
             }
         }
-        splitOptions.sort((a, b) => a.length - b.length);
-
-        // 最終的な計算結果オブジェクト
-        const results: CalculationResults = {
-            materials: final_materials,
-            totalWeight,
-            spanTotal,
-            spanMmTotal,
-            totalHeight,
-            jackBaseCount,
-            pillarText,
-            transportUnic,
-            transportFlatbed,
-            splitOptions: splitOptions.slice(0, 15)
-        };
+         
+         // 最終的な計算結果オブジェクト
+         const results: CalculationResults = {
+             materials: final_materials,
+             totalWeight,
+             spanTotal,
+             spanMmTotal,
+             totalHeight,
+             jackBaseCount,
+             pillarText,
+             transportUnic,
+             transportFlatbed,
+             splitOptions: splitOptions.slice(0, 15)
+         };
 
         return { results, validation };
     }, [config]);
