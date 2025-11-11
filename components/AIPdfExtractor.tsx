@@ -90,7 +90,7 @@ return (
                     AIがスパン数や段数などの大枠情報を読み取り、以下の項目に入力します。（PDF、jpeg、png）
                 </p>
                 <p className="text-sm font-bold text-gray-700">
-                    現在、現場情報のわかる図面のアップロードは禁止とさせて頂いております。
+                    現在、現場情報のわかる設計図や施工図のアップロードは禁止です。（足場スケッチは可）
                 </p>
                 <p className="text-sm font-bold text-gray-700">
                     今後セキュリティ強化次第、制限解除予定です。
