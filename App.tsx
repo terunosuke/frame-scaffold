@@ -9,6 +9,7 @@ import { useScaffoldingCalculator } from './hooks/useScaffoldingCalculator';
 import 'react-tabs/style/react-tabs.css';
 import { analyzeScaffoldingFile } from './utils/gemini';
 import { processFileForAnalysis } from './utils/fileProcessor';
+import { validateAIResponse } from './utils/aiResponseValidator';
 
 // 薄い緑を基調とした統一されたカラーパレット
 const customStyles = `
@@ -136,6 +137,22 @@ const App: React.FC = () => {
             const { base64Data, mimeType } = await processFileForAnalysis(file);
             const extractedData = await analyzeScaffoldingFile(base64Data, mimeType, prompt);
 
+            // ===== バリデーション =====
+            const validation = validateAIResponse(extractedData);
+
+            // エラーがある場合は処理を中断
+            if (!validation.isValid) {
+                throw new Error(`AI解析結果が不正です:\n${validation.errors.join('\n')}`);
+            }
+
+            // 警告がある場合はコンソールに出力（ユーザーには成功として扱う）
+            if (validation.warnings.length > 0) {
+                console.warn('⚠️ AI解析の警告:', validation.warnings);
+            }
+
+            // バリデーション済みのデータを使用
+            const validatedData = validation.sanitizedData;
+
             // 枠組足場用の寸法変換（インチ系からキリのいい数字へ）
             const dimensionMapping = {
                 1829: 1800,
@@ -146,20 +163,20 @@ const App: React.FC = () => {
                 450: 450
             };
 
-            // 抽出されたデータの寸法を変換
-            const convertedData = { ...extractedData };
-            
+            // バリデーション済みデータの寸法を変換
+            const convertedData = { ...validatedData };
+
             // スパン寸法の変換
             ['span600', 'span900', 'span1200', 'span1500', 'span1800'].forEach(key => {
-                if (extractedData[`span${dimensionMapping[parseInt(key.slice(4))]}`] !== undefined) {
-                    convertedData[key] = extractedData[`span${dimensionMapping[parseInt(key.slice(4))]}`];
+                if (validatedData[`span${dimensionMapping[parseInt(key.slice(4))]}`] !== undefined) {
+                    convertedData[key] = validatedData[`span${dimensionMapping[parseInt(key.slice(4))]}`];
                 }
             });
 
             // 枠幅の変換
-            if (extractedData.frameCols) {
+            if (validatedData.frameCols) {
                 const newFrameCols = {};
-                Object.entries(extractedData.frameCols).forEach(([width, count]) => {
+                Object.entries(validatedData.frameCols).forEach(([width, count]) => {
                     const mappedWidth = dimensionMapping[parseInt(width)] || width;
                     newFrameCols[mappedWidth] = count;
                 });
@@ -167,8 +184,8 @@ const App: React.FC = () => {
             }
 
             // faceWidthの変換
-            if (extractedData.faceWidth) {
-                convertedData.faceWidth = dimensionMapping[extractedData.faceWidth] || extractedData.faceWidth;
+            if (validatedData.faceWidth) {
+                convertedData.faceWidth = dimensionMapping[validatedData.faceWidth] || validatedData.faceWidth;
             }
 
             setConfig(prev => {

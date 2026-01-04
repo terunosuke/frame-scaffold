@@ -9,11 +9,11 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = `https://esm.sh/pdfjs-dist@4.5.136/buil
 
 // --- 定数定義 ---
 // 処理後の画像の最大辺の長さ（ピクセル）。サーバーレス関数のペイロード上限を考慮し、値を調整。
-const MAX_IMAGE_DIMENSION = 1536;
+const MAX_IMAGE_DIMENSION = 2048; // 1536から向上（+33%）- 図面の細かい文字を読み取りやすく
 // 処理後のJPEG画像の品質（0.0〜1.0）。
-const IMAGE_QUALITY = 0.8;
+const IMAGE_QUALITY = 0.92; // 0.8から向上 - ほぼロスレス圧縮で文字の鮮明さを保持
 // PDFをレンダリングする際の解像度スケール。高解像度すぎるとペイロード上限を超えるため値を調整。
-const PDF_RENDER_SCALE = 1.5;
+const PDF_RENDER_SCALE = 2.0; // 1.5から向上（+33%）- PDF内の小さな寸法表記を読み取りやすく
 
 
 /**
