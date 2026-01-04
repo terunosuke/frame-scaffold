@@ -309,22 +309,24 @@ export const useScaffoldingCalculator = (config: ScaffoldingConfig): { results: 
         }
         
         // 妻側手すり（1段手すりに変更）
+        // アンチの設置段数と連動
         const tsumaHandrail_items: { [key: string]: number } = {};
         const tsumaSides = config.tsumaCount;
-        const levels = config.levelCount;
+        const tsumaLevels = antiLevelsResolved.length; // アンチと同じ段数
 
         for (const [width, colCount] of Object.entries(frameCols)) {
             if (colCount > 0) {
-                const qty = colCount * levels * tsumaSides * 1; // 1枚手すり
+                const qty = colCount * tsumaLevels * tsumaSides * 1; // アンチと同じ段数
                 tsumaHandrail_items[`妻側手すり（${width}）`] = qty;
             }
         }
-        
+
         // 妻側巾木
+        // アンチの設置段数と連動
         const tsumaToeboard_items: { [key: string]: number } = {};
         for (const [width, colCount] of Object.entries(frameCols)) {
             if (colCount > 0) {
-                const qty = colCount * levels * tsumaSides * 1; // 巾木は1段分
+                const qty = colCount * tsumaLevels * tsumaSides * 1; // アンチと同じ段数
                 tsumaToeboard_items[`妻側巾木（${width}）`] = qty;
             }
         }
