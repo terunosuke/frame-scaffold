@@ -134,8 +134,8 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                 <SummaryCard title="総重量" value={`${results.totalWeight.toFixed(2)} kg`} icon="⚖️" bgColor="bg-green-50" />
-                <SummaryCard title="ユニック車" value={results.transportUnic} icon="🏗️" />
-                <SummaryCard title="平車" value={results.transportFlatbed} icon="🚛" />
+                <SummaryCard title="ユニック車（重量のみ考慮）" value={results.transportUnic} icon="🏗️" />
+                <SummaryCard title="平車（重量のみ考慮）" value={results.transportFlatbed} icon="🚛" />
             </div>
             
             <div className="bg-green-50 p-4 rounded-lg mb-8 border border-green-200">
@@ -148,7 +148,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
                         className="h-4 w-4 rounded border-green-300 text-green-600 focus:ring-green-500"
                     />
                     <label htmlFor="split-transport" className="ml-3 block text-sm font-medium text-gray-700">
-                        🧮 車両を分割して運搬する（敷地条件等を考慮）
+                        🧮 車両を分割して運搬する（大型車両が入れない現場）
                     </label>
                 </div>
 
@@ -169,7 +169,7 @@ export const ResultsTab: React.FC<ResultsTabProps> = ({ config, results }) => {
                             </div>
                         ) : (
                             <div className="text-red-600 text-sm font-semibold p-2 bg-red-100 rounded-md">
-                                ⚠️ 総重量が大きいです。車両選択をしてください。
+                                ⚠️ 総重量が小さく、分割の推奨はありません。
                             </div>
                         )}
                     </div>

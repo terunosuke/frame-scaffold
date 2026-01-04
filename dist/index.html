@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Favicon設定 -->
+    <link rel="icon" type="image/png" href="/icon_枠.png" />
+    <!-- iPad/iPhone用アイコン -->
+    <link rel="apple-touch-icon" href="/icon_枠.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>枠組足場</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              // メインカラー：薄い黄緑色系
+              primary: {
+                50: '#f0fdf4',   // 非常に薄い緑
+                100: '#dcfce7',  // 薄い緑
+                200: '#bbf7d0',  // やや薄い緑
+                300: '#86efac',  // 中程度の緑
+                400: '#4ade80',  // やや濃い緑
+                500: '#22c55e',  // メイン緑
+                600: '#16a34a',  // 濃い緑
+                700: '#15803d',  // より濃い緑
+                800: '#166534',  // 暗い緑
+                900: '#14532d',  // 最暗緑
+                DEFAULT: '#22c55e', // primary-500
+                'hover': '#16a34a', // primary-600
+                'light': '#f0fdf4'  // primary-50
+              },
+              // セカンダリカラー：グレー系
+              secondary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a',
+                DEFAULT: '#64748b',
+                'light': '#f8fafc'
+              }
+            },
+            fontFamily: {
+              'sans': ['Inter', 'Noto Sans JP', 'system-ui', 'sans-serif'],
+            },
+            boxShadow: {
+              'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+              'card': '0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.06)',
+            }
+          }
+        }
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/index.css">
+<style>
+  body {
+    font-family: 'Inter', 'Noto Sans JP', system-ui, sans-serif;
+  }
+  
+  /* カスタムスクロールバー */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+
+  /* フォーカスリングのカスタマイズ */
+  .focus-ring:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+    border-color: #22c55e;
+  }
+
+  /* グラデーション背景 */
+  .gradient-bg {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  }
+</style>
+    <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "react-tabs/": "https://esm.sh/react-tabs@^6.1.0/",
+    "react-tabs": "https://esm.sh/react-tabs@^6.1.0",
+    "@google/genai": "https://esm.sh/@google/genai@^1.10.0",
+    "pdfjs-dist": "https://esm.sh/pdfjs-dist@4.5.136",
+    "pdfjs-dist/": "https://esm.sh/pdfjs-dist@4.5.136/"
+  }
+}
+</script>
+  <script type="module" crossorigin src="/assets/index-DoP02aNt.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-BqTOw2_m.css">
+</head>
+  <body class="bg-secondary-50">
+    <div id="root"></div>
+  </body>
+</html>
